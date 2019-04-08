@@ -2,19 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyController : MonoBehaviour {
+public class BasicEnemy : Enemy {
 
     [SerializeField]
-    private float movementSpeed;
+    private float movementSpeed = 5;
 
     Vector3 movementDirection;
     Transform currentDestination;
-    int currentTargetIndex=0;
+    int currentTargetIndex = 0;
 
     void GetNextTarget() {
 
         if (currentTargetIndex == PathController.waypoints.Length) {
-            Destroy(gameObject);
             return;
         }
         else {
@@ -22,9 +21,16 @@ public class EnemyController : MonoBehaviour {
             currentDestination = PathController.waypoints[currentTargetIndex];
             currentTargetIndex++;
         }
-        
-    }
 
+    }
+    
+    public override void Move() {
+        transform.Translate(movementDirection * Time.deltaTime, Space.World);
+        if (Vector3.Distance(transform.position, currentDestination.position) < 0.2f) {
+            GetNextTarget();
+        }
+    }
+    
     // Start is called before the first frame update
     void Start() {
         GetNextTarget();
@@ -32,10 +38,7 @@ public class EnemyController : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        transform.Translate(movementDirection * Time.deltaTime, Space.World);
-        if (Vector3.Distance(transform.position, currentDestination.position)<0.2f) {
-            GetNextTarget();
-        }
+        Move();
     }
 
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class WaveSpawnerController : MonoBehaviour {
 
     [SerializeField]
-    EnemyController spawnedEnemy;
+    Enemy spawnedEnemy;
 
     [SerializeField]
     int numberOfEnemies;
