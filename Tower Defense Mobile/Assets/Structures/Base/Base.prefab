@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 433158941607792215}
   m_Layer: 0
   m_Name: Base
-  m_TagString: Untagged
+  m_TagString: Structure
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -94,7 +94,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01192d39215ce5243873731f248250ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseHP: 100
 --- !u!61 &7086120216499058236
 BoxCollider2D:
   m_ObjectHideFlags: 0

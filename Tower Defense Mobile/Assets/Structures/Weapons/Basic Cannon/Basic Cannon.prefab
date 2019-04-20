@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3934874358182125034}
   m_Layer: 0
-  m_Name: Barrel Exit
+  m_Name: BulletSpawnpoint
   m_TagString: Untagged
   m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -80,7 +80,7 @@ MonoBehaviour:
   cannonHead: {fileID: 4738815374832580544}
   barrelExit: {fileID: 3934874358182125034}
   rotationSpeed: 15
-  attackSpeed: 3
+  attacksPerSecond: 3
   usedProjectile: {fileID: 7283128629871834067, guid: e203785c81a67844a8fa6cea910ae001,
     type: 3}
 --- !u!58 &8324584823371489552
@@ -210,7 +210,7 @@ GameObject:
   - component: {fileID: 4738815374832580544}
   - component: {fileID: 1824051651548219365}
   m_Layer: 0
-  m_Name: Basic Cannon Head
+  m_Name: CannonHead
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

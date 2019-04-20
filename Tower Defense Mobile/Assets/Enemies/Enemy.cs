@@ -1,18 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public abstract class Enemy : MonoBehaviour{
-    
+
+    public class EnemyEvent : UnityEvent<Enemy> { }
+
     protected float health = 100;
-
-    protected float movementSpeed = 2;
-
-    protected float distanceFromNextWaypoint;
+    public EnemyEvent OnDeath = new EnemyEvent();
 
     Vector3 movementDirection;
     Transform currentDestination;
     int currentTargetIndex = 0;
+    protected float distanceFromNextWaypoint;
+    protected float movementSpeed = 2;
 
     //zwraca pozycję na ścierzce waypointów i odległość od obecnego celu
     public float[] DistanceToBase() {
@@ -21,13 +23,14 @@ public abstract class Enemy : MonoBehaviour{
 
     public void TakeDamage(int dmg) {
         health -= dmg;
-        if (health<=0) {
+        if (health <= 0) {
             Die();
         }
     }
 
     public virtual void Die() {
         //W przyszłości kwestie graficzne umierania (animacje/eksplozje/particle etc.)
+        OnDeath.Invoke(this);
         Destroy(gameObject);
     }
 

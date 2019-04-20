@@ -30,26 +30,6 @@ public abstract class Weapon : Structure {
         }
     }
 
-    //Usuwanie obiektu nie wywołuje "OnColliderExit" po śmierci wrogów pozostają nulle.
-    //Dobrze by było to ogarnąć, to tylko szybki fix.
-    protected void ValidateEnemyList() {
-
-        List<Enemy> deadReferences = new List<Enemy>();
-
-        foreach (Enemy enemy in availableEnemies) {
-            if (enemy == null) {
-                deadReferences.Add(enemy);
-            }
-        }
-
-        foreach (Enemy enemy in deadReferences) {
-            availableEnemies.Remove(enemy);
-        }
-
-
-
-    }
-
     protected void Start() {
 
         availableEnemies = new List<Enemy>();
@@ -66,15 +46,23 @@ public abstract class Weapon : Structure {
         }
     }
 
+    void RemoveFromTrackedEnemies(Enemy enemy) {
+        availableEnemies.Remove(enemy);
+    }
+
     protected void OnTriggerEnter2D(Collider2D other) {
         if (other.tag.Equals("Enemy")) {
-            availableEnemies.Add(other.GetComponent<Enemy>());
+            Enemy enemy = other.GetComponent<Enemy>();
+            enemy.OnDeath.AddListener(RemoveFromTrackedEnemies);
+            availableEnemies.Add(enemy);
         }
     }
 
     protected void OnTriggerExit2D(Collider2D other) {
         if (other.tag.Equals("Enemy")) {
-            availableEnemies.Remove(other.GetComponent<Enemy>());
+            Enemy enemy = other.GetComponent<Enemy>();
+            enemy.OnDeath.RemoveListener(RemoveFromTrackedEnemies);
+            availableEnemies.Remove(enemy);
         }
     }
 

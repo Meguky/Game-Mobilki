@@ -35,7 +35,6 @@ public class Projectile : MonoBehaviour {
 
     }
 
-
     void RotateTowardsEnemy() {
 
         Vector2 direction = new Vector2(trackedTarget.transform.position.x - transform.position.x, trackedTarget.transform.position.y - transform.position.y);

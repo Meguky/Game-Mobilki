@@ -54,12 +54,9 @@ public class BasicCannon : Weapon {
 
     new void Update() {
         if (availableEnemies.Count != 0) {
-            ValidateEnemyList();
-            if (availableEnemies.Count != 0) {
-                TrackEnemy();
-                RotateCannonTowardsEnemy();
-                TryShoot();
-            }
+            TrackEnemy();
+            RotateCannonTowardsEnemy();
+            TryShoot();
         }
     }
 }

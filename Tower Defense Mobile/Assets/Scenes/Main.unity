@@ -554,22 +554,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2568943627912359557, guid: bc577ad0cdbc3a64a86c1ab0b98e4195,
-        type: 3}
-      propertyPath: spawnedEnemy
-      value: 
-      objectReference: {fileID: 2881266602900286434, guid: 8c5fb80e1e3f28d4caecf2a729d0bb17,
-        type: 3}
-    - target: {fileID: 2568943627912359557, guid: bc577ad0cdbc3a64a86c1ab0b98e4195,
-        type: 3}
-      propertyPath: numberOfEnemies
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 2568943627912359557, guid: bc577ad0cdbc3a64a86c1ab0b98e4195,
-        type: 3}
-      propertyPath: spawnIntervals
-      value: 2
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bc577ad0cdbc3a64a86c1ab0b98e4195, type: 3}
 --- !u!1001 &2800033580713223658
@@ -637,36 +621,6 @@ PrefabInstance:
     - target: {fileID: 5218496247446521316, guid: 31910ac32ba852e4c8ae051f871d8e80,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8115786600021692798, guid: 31910ac32ba852e4c8ae051f871d8e80,
-        type: 3}
-      propertyPath: m_Name
-      value: CannonHead
-      objectReference: {fileID: 0}
-    - target: {fileID: 4738815374832580544, guid: 31910ac32ba852e4c8ae051f871d8e80,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4738815374832580544, guid: 31910ac32ba852e4c8ae051f871d8e80,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4738815374832580544, guid: 31910ac32ba852e4c8ae051f871d8e80,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 681270055042426352, guid: 31910ac32ba852e4c8ae051f871d8e80,
-        type: 3}
-      propertyPath: m_Name
-      value: BulletSpawnpoint
-      objectReference: {fileID: 0}
-    - target: {fileID: 3059816187471401676, guid: 31910ac32ba852e4c8ae051f871d8e80,
-        type: 3}
-      propertyPath: attackCooldown
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -737,21 +691,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7516017885841735501, guid: d9bbf4797c581a9448b70174a1f17968,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7516017885841735501, guid: d9bbf4797c581a9448b70174a1f17968,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 8.39
-      objectReference: {fileID: 0}
-    - target: {fileID: 7516017885841735501, guid: d9bbf4797c581a9448b70174a1f17968,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.58
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d9bbf4797c581a9448b70174a1f17968, type: 3}
