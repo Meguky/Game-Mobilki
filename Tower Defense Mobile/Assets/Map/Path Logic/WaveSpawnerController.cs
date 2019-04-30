@@ -2,32 +2,55 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WaveSpawnerController : MonoBehaviour {
+public class WaveSpawnerController : MonoBehaviour
+{
+
+    [SerializeField]
+    UnityEngine.UI.Text announcerTextfield;
 
     [SerializeField]
     Enemy spawnedEnemy;
 
     [SerializeField]
-    int numberOfEnemies;
+    float numberOfWaves;
 
     [SerializeField]
-    float spawnIntervals;
+    int enemiesPerWave;
 
-    IEnumerator SpawningCoroutine() {
-        for (int i=0; i<numberOfEnemies; i++) {
+    [SerializeField]
+    float spawnIntervals = 0.5f;
+
+    [SerializeField]
+    float waveIntervals = 2.0f;
+
+    float waveCountdown;
+
+    IEnumerator SpawnNextWave() {
+
+        for (int j = 0; j < enemiesPerWave; j++) {
+
+            Instantiate(spawnedEnemy, transform.position, transform.rotation, transform);
             yield return new WaitForSeconds(spawnIntervals);
-            Instantiate(spawnedEnemy);
+
         }
-        yield return new WaitForSeconds(.1f);
+
     }
 
     // Start is called before the first frame update
     void Start() {
-        StartCoroutine(SpawningCoroutine());
+        waveCountdown = waveIntervals;
     }
 
     // Update is called once per frame
     void Update() {
+
+        if (waveCountdown<=0f) {
+            StartCoroutine(SpawnNextWave());
+            waveCountdown = waveIntervals;
+        }
+
+        announcerTextfield.text = "Next wave approaches in " + (Mathf.Floor(waveCountdown)+1) + "!";
+        waveCountdown -= Time.deltaTime;
 
     }
 }
