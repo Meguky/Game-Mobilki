@@ -24,7 +24,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2568943627912359559}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -9.82, y: 0.08, z: -0.56}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -43,7 +43,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b0604ed8fd11d4429d9b0e099ba177e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  announcerTextfield: {fileID: 0}
   spawnedEnemy: {fileID: 2881266602900286434, guid: 8c5fb80e1e3f28d4caecf2a729d0bb17,
     type: 3}
-  numberOfEnemies: 10
+  numberOfWaves: 5
+  enemiesPerWave: 5
   spawnIntervals: 1
+  waveIntervals: 10

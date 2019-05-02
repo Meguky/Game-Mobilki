@@ -24,6 +24,7 @@ public class WaveSpawnerController : MonoBehaviour
     float waveIntervals = 2.0f;
 
     float waveCountdown;
+    bool currentWaveOver;
 
     IEnumerator SpawnNextWave() {
 
@@ -34,23 +35,31 @@ public class WaveSpawnerController : MonoBehaviour
 
         }
 
+        currentWaveOver = true;
+
     }
 
     // Start is called before the first frame update
     void Start() {
         waveCountdown = waveIntervals;
+        currentWaveOver = true;
     }
 
     // Update is called once per frame
     void Update() {
 
-        if (waveCountdown<=0f) {
-            StartCoroutine(SpawnNextWave());
-            waveCountdown = waveIntervals;
+        if (currentWaveOver) {
+
+            if (waveCountdown <= 0f) {
+                StartCoroutine(SpawnNextWave());
+                announcerTextfield.text = "";
+                currentWaveOver = false;
+                waveCountdown = waveIntervals;
+            }
+            else {
+                waveCountdown -= Time.deltaTime;
+                announcerTextfield.text = "Next wave approaches in " + (Mathf.Floor(waveCountdown) + 1) + "!";
+            }
         }
-
-        announcerTextfield.text = "Next wave approaches in " + (Mathf.Floor(waveCountdown)+1) + "!";
-        waveCountdown -= Time.deltaTime;
-
     }
 }
