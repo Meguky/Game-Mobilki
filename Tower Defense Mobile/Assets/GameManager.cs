@@ -8,6 +8,8 @@ namespace TowerDefense {
 
         public static GameManager instance;
 
+        private CameraManager cameraManager;
+
         void Start() {
 
             if (instance == null) {
@@ -18,16 +20,31 @@ namespace TowerDefense {
                 Destroy(gameObject);
             }
 
+            cameraManager = Camera.main.GetComponent<CameraManager>();
+
         }
 
         private void Update() {
             ManageTouch();
         }
 
-        //Elementy PC tylko na potrzeby testów. WYWALIĆ (lub zakomentaować) przed buildem.
+        //Zmienne na rzecz obsługi dotyku
+        Vector2 touchStartPosition, touchPreviousPosition ,touchCurrentPosition;
+            
         void ManageTouch() {
-            if (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer) {
+
+            //Test platformy też żeby kodu ciągle niezmieniać. Może po developmencie wywalić.
+            if (Application.platform == RuntimePlatform.Android) {
                 if (Input.touchCount > 0 && Input.touchCount < 2 && !EventSystem.current.IsPointerOverGameObject()) {
+
+                    if (Input.GetTouch(0).phase == TouchPhase.Began) {
+                        touchCurrentPosition = touchPreviousPosition = touchStartPosition = Input.GetTouch(0).position;
+                    }
+                    if (Input.GetTouch(0).phase == TouchPhase.Moved) {
+                        touchPreviousPosition = touchCurrentPosition;
+                        touchCurrentPosition = Input.GetTouch(0).position;
+                        cameraManager.MoveCameraBy(touchPreviousPosition - touchCurrentPosition);
+                    }
                     if (Input.GetTouch(0).phase == TouchPhase.Ended) {
 
                         Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
@@ -41,24 +58,38 @@ namespace TowerDefense {
                             }
                         }
                     }
+
                 }
             }
-            else if (Application.platform == RuntimePlatform.WindowsEditor || Application.platform == RuntimePlatform.OSXEditor) {
-                if (Input.GetMouseButtonUp(0) && !EventSystem.current.IsPointerOverGameObject()) {
+            //Wersja stosująca myszkę - do debugu
+            if (Application.platform == RuntimePlatform.WindowsEditor || Application.platform == RuntimePlatform.WindowsPlayer) {
+                if (!EventSystem.current.IsPointerOverGameObject()) {
 
-                    Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                    Vector2 touchPos = new Vector2(worldPos.x, worldPos.y);
-                    Collider2D hit = Physics2D.OverlapPoint(touchPos);
+                    if (Input.GetMouseButtonDown(0)) {
+                        touchCurrentPosition = touchPreviousPosition = touchStartPosition = Input.mousePosition;
+                    }
+                    if (Input.GetMouseButton(0)) {
+                        touchPreviousPosition = touchCurrentPosition;
+                        touchCurrentPosition = Input.mousePosition;
+                        cameraManager.MoveCameraBy(touchPreviousPosition - touchCurrentPosition);
+                    }
+                    if (Input.GetMouseButtonUp(0)) {
 
-                    MonoBehaviour[] scripts = hit.gameObject.GetComponents<MonoBehaviour>();
-                    foreach (MonoBehaviour script in scripts) {
-                        if (script is IInteractable) {
-                            ((IInteractable)script).SingleTap(worldPos);
+                        Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                        Vector2 touchPos = new Vector2(worldPos.x, worldPos.y);
+                        Collider2D hit = Physics2D.OverlapPoint(touchPos);
+
+                        MonoBehaviour[] scripts = hit.gameObject.GetComponents<MonoBehaviour>();
+                        foreach (MonoBehaviour script in scripts) {
+                            if (script is IInteractable) {
+                                ((IInteractable)script).SingleTap(worldPos);
+                            }
                         }
                     }
 
                 }
             }
+
         }
 
     }

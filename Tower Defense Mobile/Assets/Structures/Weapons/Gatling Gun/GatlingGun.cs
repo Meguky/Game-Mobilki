@@ -5,20 +5,14 @@ using UnityEngine;
 public class GatlingGun : Weapon {
 
     [Header("Required References")]
-    [SerializeField]
-    Transform cannonHead;
-    [SerializeField]
-    ParticleSystem gunfireEffect;
-    [SerializeField]
-    ParticleSystem gunshotEffect;
+    [SerializeField] Transform cannonHead;
+    [SerializeField] ParticleSystem gunfireEffect;
+    [SerializeField] ParticleSystem gunshotEffect;
 
     [Header("Parameters")]
-    [SerializeField]
-    float rotationSpeed = 15.0f;
-    [SerializeField]
-    float attacksPerSecond = 3f;
-    [SerializeField]
-    float attackDamage = 5f;
+    [SerializeField] float rotationSpeed = 15.0f;
+    [SerializeField] float attacksPerSecond = 3f;
+    [SerializeField] float attackDamage = 5f;
 
     float currCooldown = 0;
 

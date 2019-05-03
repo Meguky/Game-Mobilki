@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class RocketLauncher : Weapon {
 
-    [SerializeField]
-    Transform cannonHead, barrelExit;
-    [SerializeField]
-    float rotationSpeed = 15.0f;
-    [SerializeField]
-    float attacksPerSecond = 3f;
-    float currCooldown = 0;
 
-    [SerializeField]
-    HomingMissle usedProjectile;
+    [Header("Required References")]
+    [SerializeField] Transform cannonHead;
+    [SerializeField] Transform barrelExit;
+    [SerializeField] HomingMissle usedProjectile;
+
+    [Header("Parameters")]
+    [SerializeField] float rotationSpeed = 15.0f;
+    [SerializeField] float attacksPerSecond = 3f;
+    float currCooldown = 0;
 
     Transform bulletSpawnpoint;
 

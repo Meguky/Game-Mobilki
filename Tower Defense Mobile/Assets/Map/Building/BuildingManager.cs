@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 public class BuildingManager : MonoBehaviour, IInteractable {
 
     private Vector3 clickPosition, fixedClickPosition;
-    Grid buildGrid;
+    private Grid buildGrid;
 
     // Start is called before the first frame update
     void Start() {

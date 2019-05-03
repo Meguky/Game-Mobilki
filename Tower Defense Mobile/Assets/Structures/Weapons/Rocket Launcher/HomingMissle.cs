@@ -4,12 +4,10 @@ using UnityEngine;
 
 public class HomingMissle : MonoBehaviour {
 
-    [SerializeField]
-    float rotationSpeed = 0.5f;
-    [SerializeField]
-    float movementSpeed = 10;
-    [SerializeField]
-    float damage = 50;
+    [Header("Parameters")]
+    [SerializeField] float rotationSpeed = 0.5f;
+    [SerializeField] float movementSpeed = 10;
+    [SerializeField] float damage = 50;
 
     Transform trackedTarget;
     RocketLauncher originLauncher;

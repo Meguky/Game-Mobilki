@@ -1,27 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class WaveSpawnerController : MonoBehaviour
-{
+public class WaveSpawnerController : MonoBehaviour {
 
-    [SerializeField]
-    UnityEngine.UI.Text announcerTextfield;
+    [Header("Required References")]
+    [SerializeField] Text announcerTextfield;
+    [SerializeField] Enemy spawnedEnemy;
 
-    [SerializeField]
-    Enemy spawnedEnemy;
-
-    [SerializeField]
-    float numberOfWaves;
-
-    [SerializeField]
-    int enemiesPerWave;
-
-    [SerializeField]
-    float spawnIntervals = 0.5f;
-
-    [SerializeField]
-    float waveIntervals = 2.0f;
+    [Header("Required Parameters")]
+    [SerializeField] float numberOfWaves;
+    [SerializeField] int enemiesPerWave;
+    [SerializeField] float spawnIntervals = 0.5f;
+    [SerializeField] float waveIntervals = 2.0f;
 
     float waveCountdown;
     bool currentWaveOver;
