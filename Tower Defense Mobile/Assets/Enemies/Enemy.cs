@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public abstract class Enemy : MonoBehaviour{
+public abstract class Enemy : MonoBehaviour, IDamageable<float>{
 
     public class EnemyEvent : UnityEvent<Enemy> { }
 

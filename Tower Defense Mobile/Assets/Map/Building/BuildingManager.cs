@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class BuildingManager : MonoBehaviour {
+public class BuildingManager : MonoBehaviour, IInteractable {
 
     private Vector3 clickPosition, fixedClickPosition;
     Grid buildGrid;
@@ -13,38 +13,14 @@ public class BuildingManager : MonoBehaviour {
         buildGrid = GetComponent<Grid>();
     }
 
-    // Obsługa wydarzenia dotykowego ekranu. Funkcje myszki na potrzeby playtestowe, przerobić na dotyk do builda.
-    void Update() {
-        if (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer) {
-            if (Input.touchCount > 0 && Input.touchCount < 2 && !EventSystem.current.IsPointerOverGameObject()) {
-                if (Input.GetTouch(0).phase == TouchPhase.Began) {
-                    ManageClick(Input.GetTouch(0).position);
-                }
-            }
-        }
-        else if (Application.platform == RuntimePlatform.WindowsEditor || Application.platform == RuntimePlatform.OSXEditor) {
-            if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) {
-                ManageClick(Input.mousePosition);
-            }
-        }
+    public void SingleTap(Vector3 click) {
 
-    }
+        clickPosition = new Vector3(click.x, click.y, transform.position.z);
 
-    //TODO wywalić zarządzanie raycastami do osobnego managera
-    private void ManageClick(Vector3 click) {
+        Vector3Int cellPosition = buildGrid.WorldToCell(clickPosition);
+        Debug.Log(cellPosition);
+        fixedClickPosition = buildGrid.GetCellCenterWorld(cellPosition);
 
-        Vector3 wp = Camera.main.ScreenToWorldPoint(click);
-        Vector2 touchPos = new Vector2(wp.x, wp.y);
-        Collider2D hit = Physics2D.OverlapPoint(touchPos);
-
-        if (hit != null && hit == gameObject.GetComponent<Collider2D>()) {
-
-            clickPosition = new Vector3(touchPos.x, touchPos.y, transform.position.z);
-
-            Vector3Int cellPosition = buildGrid.WorldToCell(clickPosition);
-            fixedClickPosition = buildGrid.GetCellCenterWorld(cellPosition);
-
-        }
     }
 
     //DEBUG

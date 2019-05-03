@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Structure : MonoBehaviour {
+public abstract class Structure : MonoBehaviour, IDamageable<float> {
 
-    protected int health = 100;
+    protected float health = 100;
 
-    public void TakeDamage(int dmg) {
+    public void TakeDamage(float dmg) {
         health -= dmg;
         if (health <= 0) {
-            Destruct();
+            Die();
         }
     }
 
-    public virtual void Destruct() {
+    public virtual void Die() {
         //W przyszłości kwestie graficzne umierania (animacje/eksplozje/particle etc.)
         Destroy(gameObject);
     }
