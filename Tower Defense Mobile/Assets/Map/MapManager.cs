@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class BuildingManager : MonoBehaviour, IInteractable {
+public class MapManager : MonoBehaviour, IInteractable {
 
-    public static BuildingManager instance;
+    public static MapManager instance;
 
     private Grid buildGrid;
 
