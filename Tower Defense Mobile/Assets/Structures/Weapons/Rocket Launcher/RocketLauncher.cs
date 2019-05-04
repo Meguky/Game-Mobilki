@@ -10,17 +10,15 @@ public class RocketLauncher : Weapon {
     [SerializeField] Transform barrelExit;
     [SerializeField] HomingMissle usedProjectile;
 
+
     [Header("Parameters")]
     [SerializeField] float rotationSpeed = 15.0f;
     [SerializeField] float attacksPerSecond = 3f;
     float currCooldown = 0;
 
-    Transform bulletSpawnpoint;
-
     new void Start() {
 
         attacksPerSecond = 1.0f / attacksPerSecond;
-        bulletSpawnpoint = transform.Find("CannonHead/BulletSpawnpoint");
         availableEnemies = new List<Enemy>();
         weaponRange = GetComponent<CircleCollider2D>();
 
@@ -45,7 +43,7 @@ public class RocketLauncher : Weapon {
 
         if (currCooldown>= attacksPerSecond) {
 
-            HomingMissle newProjectile = Instantiate(usedProjectile, bulletSpawnpoint.position, bulletSpawnpoint.rotation);
+            HomingMissle newProjectile = Instantiate(usedProjectile, barrelExit.position, barrelExit.rotation);
             newProjectile.InitialiseBullet(trackedEnemy.transform, this);
             currCooldown = 0;
 
@@ -53,7 +51,12 @@ public class RocketLauncher : Weapon {
     }
 
     public Transform GetTargetUpdate() {
-        return trackedEnemy.transform;
+        if (trackedEnemy != null) {
+            return trackedEnemy.transform;
+        }
+        else {
+            return null;
+        }
     }
 
     new void Update() {

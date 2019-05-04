@@ -12,6 +12,8 @@ public class HomingMissle : MonoBehaviour {
     Transform trackedTarget;
     RocketLauncher originLauncher;
 
+    CircleCollider2D trackingZone;
+
     // Start is called before the first frame update
     void Start() {
 
@@ -21,7 +23,13 @@ public class HomingMissle : MonoBehaviour {
     void Update() {
 
         if (trackedTarget == null) {
-            trackedTarget = originLauncher.GetTargetUpdate();
+            Transform targetUpdate = originLauncher.GetTargetUpdate();
+            if (targetUpdate != null) {
+                trackedTarget = originLauncher.GetTargetUpdate();
+            }
+            else {
+                Destroy(gameObject);
+            }
         }
 
         RotateTowardsEnemy();
