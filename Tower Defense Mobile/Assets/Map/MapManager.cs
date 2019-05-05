@@ -1,50 +1,26 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.Events;
 
 public class MapManager : MonoBehaviour, IInteractable {
 
     public static MapManager instance;
 
-    private Grid buildGrid;
+    private Grid mapGrid;
 
     private Structure currentlySelectedStructure;
     private Structure[,] structures = new Structure[18, 28];
 
-    public class GridNode
-    {
-        public bool isWalkable;
-        public Vector2Int gridLocation;
-        public GridNode parent;
+    [Header("Pathfinding")]
+    [SerializeField] Transform spawnerLocation;
+    [SerializeField] Transform baseLocation;
 
-        public int gCost;
-        public int hCost;
+    [HideInInspector] public UnityEvent OnMapChange;
 
-        public GridNode(Vector2Int location, bool walkable)
-        {
-            isWalkable = walkable;
-            gridLocation = location;
-        }
-
-        public void SetGCost(int _gCost)
-        {
-            gCost = _gCost;
-        }
-
-        public void SetHCost(int _hCost)
-        {
-            hCost = _hCost;
-        }
-
-        public int fCost
-        {
-            get { return gCost + hCost; }
-        }
-    }
     public GridNode[,] gridNodes = new GridNode[18, 28];
-    //public List<GridNode> defaultPath;
-    public LinkedList<GridNode> defaultPath;
+
+    public LinkedList<Vector3> defaultPath = new LinkedList<Vector3>();
 
     // Start is called before the first frame update
     void Start() {
@@ -56,19 +32,50 @@ public class MapManager : MonoBehaviour, IInteractable {
             Destroy(gameObject);
         }
 
-        buildGrid = GetComponent<Grid>();
+        mapGrid = GetComponent<Grid>();
+
+        OnMapChange = new UnityEvent();
+
+        //Inicjalizacja grida
+        for (int i=0; i<18; ++i) {
+            for (int j = 0; j < 28; ++j) {
+                gridNodes[i, j] = new GridNode {
+                    gridLocation = new Vector2Int(i, j),
+                    isWalkable = true,
+                    parent = null
+                };
+            }
+        }
+
+        defaultPath = FindPathToBaseFrom(spawnerLocation.position);
+
     }
 
     public void SingleTap(Vector3 click) {
 
-        Vector3Int cellPosition = buildGrid.WorldToCell(click);
-        Vector3 cellCenterPosition = buildGrid.GetCellCenterWorld(cellPosition);
+        Vector3Int cellPosition = mapGrid.WorldToCell(click);
+        Vector3 cellCenterPosition = mapGrid.GetCellCenterWorld(cellPosition);
 
         if (structures[cellPosition.x, cellPosition.y] == null) {
 
             if (currentlySelectedStructure != null) {
 
-                structures[cellPosition.x, cellPosition.y] = Instantiate(currentlySelectedStructure, cellCenterPosition, transform.rotation);
+                gridNodes[cellPosition.x, cellPosition.y].isWalkable = false;
+
+                LinkedList<Vector3> testPath = FindPathToBaseFrom(spawnerLocation.position);
+
+                if (testPath != null) {
+
+                    defaultPath = testPath;
+                    OnMapChange.Invoke();
+                    structures[cellPosition.x, cellPosition.y] = Instantiate(currentlySelectedStructure, cellCenterPosition+(new Vector3(0,0,1)), transform.rotation);
+
+                }
+                else {
+                    gridNodes[cellPosition.x, cellPosition.y].isWalkable = true;
+                    UIManager.instance.PrintToGameLog("Cannot block path to base!");
+                }
+
 
             }
             else {
@@ -87,13 +94,91 @@ public class MapManager : MonoBehaviour, IInteractable {
         currentlySelectedStructure = structure;
     }
 
-    List<GridNode> NodeNeighbours (GridNode node)
-    {
+    public class GridNode {
+
+        public bool isWalkable;
+        public Vector2Int gridLocation;
+        public GridNode parent;
+
+        public int gCost;
+        public int hCost;
+
+        public int fCost {
+            get { return gCost + hCost; }
+        }
+
+    }
+
+    //private void updateDefaultPath() {
+    //    defaultPath = FindPathToBaseFrom(spawnerLocation.position);
+    //}
+
+    public LinkedList<Vector3> FindPathToBaseFrom(Vector3 startLoc) {
+
+        Vector3Int startCellIndex = mapGrid.WorldToCell(startLoc);
+        Vector3Int baseCellIndex = mapGrid.WorldToCell(baseLocation.position);
+
+        GridNode startNode = gridNodes[startCellIndex.x, startCellIndex.y];
+        GridNode baseNode = gridNodes[baseCellIndex.x, baseCellIndex.y];
+
+        List<GridNode> openSet = new List<GridNode>();
+        HashSet<GridNode> closedSet = new HashSet<GridNode>();
+
+        openSet.Add(startNode);
+
+        while (openSet.Count > 0) {
+
+            GridNode currentNode = openSet[0];
+
+
+            for (int i = 1; i < openSet.Count; ++i) {
+                if (openSet[i].fCost < currentNode.fCost || openSet[i].fCost == currentNode.fCost && openSet[i].hCost < currentNode.hCost) {
+                    currentNode = openSet[i];
+                }
+            }
+
+            openSet.Remove(currentNode);
+            closedSet.Add(currentNode);
+
+
+            if (currentNode.Equals(baseNode)) {
+
+                return TranslatePath(startNode, baseNode);
+
+            }
+
+            foreach (GridNode neighbour in NodeNeighbours(currentNode)) {
+
+                if (!(neighbour.isWalkable) || closedSet.Contains(neighbour)) {
+                    continue;
+                }
+
+                int newMovementCostToNeighbour = currentNode.gCost + GetDistance(currentNode, neighbour);
+
+                if (newMovementCostToNeighbour < neighbour.gCost || !(openSet.Contains(neighbour))) {
+
+                    neighbour.gCost = newMovementCostToNeighbour;
+                    neighbour.hCost = GetDistance(neighbour, baseNode);
+                    neighbour.parent = currentNode;
+
+                    if (!openSet.Contains(neighbour)) {
+                        openSet.Add(neighbour);
+                    }
+                }
+
+            }
+        }
+
+        return null;
+
+    }
+
+    List<GridNode> NodeNeighbours(GridNode node) {
+
         List<GridNode> neighbours = new List<GridNode>();
 
-        for (int x = -1 ; x<=1 ; ++x){
-            for (int y = -1 ; y<=1 ; ++y)
-            {
+        for (int x = -1; x <= 1; ++x) {
+            for (int y = -1; y <= 1; ++y) {
                 if (x == 0 && y == 0)
                     continue;
 
@@ -107,71 +192,22 @@ public class MapManager : MonoBehaviour, IInteractable {
         return neighbours;
     }
 
-    public void FindPathToBase(Vector3Int startLoc)
-    {
-        GridNode baseNode = gridNodes[9, 0];
-        GridNode startNode = gridNodes[startLoc.x, startLoc.y];
+    LinkedList<Vector3> TranslatePath(GridNode startNode, GridNode targetNode) {
 
-        List<GridNode> openSet = new List<GridNode>();
-        HashSet<GridNode> closedSet = new HashSet<GridNode>();
-
-        openSet.Add(startNode);
-
-        while(openSet.Count > 0)
-        {
-            GridNode currentNode = openSet[0];
-            for (int i = 1; i < openSet.Count; ++i)
-            {
-                if(openSet[i].fCost < currentNode.fCost || openSet[i].fCost == currentNode.fCost && openSet[i].hCost < currentNode.hCost)
-                {
-                    currentNode = openSet[i];
-                }
-            }
-
-            openSet.Remove(currentNode);
-            closedSet.Add(currentNode);
-
-            if (currentNode.Equals(baseNode))
-            {
-                RetracePath(startNode, baseNode);
-                return;
-            }
-
-            foreach (GridNode neighbour in NodeNeighbours(currentNode))
-            {
-                if (!(neighbour.isWalkable) || closedSet.Contains(neighbour))
-                    continue;
-
-                int newMovementCostToNeighbour = currentNode.gCost + GetDistance(currentNode, neighbour);
-                if (newMovementCostToNeighbour < neighbour.gCost || !(openSet.Contains(neighbour)))
-                {
-                    neighbour.SetGCost(newMovementCostToNeighbour);
-                    neighbour.SetHCost(GetDistance(neighbour, baseNode));
-                    neighbour.parent = currentNode;
-
-                    if (!openSet.Contains(neighbour))
-                        openSet.Add(neighbour);
-                }
-
-            }
-        }
-    }
-
-    void RetracePath(GridNode startNode, GridNode targetNode)
-    {
-        defaultPath = new LinkedList<GridNode>();
+        LinkedList<Vector3> localPath = new LinkedList<Vector3>();
         GridNode currentNode = targetNode;
 
-        while(currentNode != startNode)
-        {
-            defaultPath.AddFirst(currentNode);
+        while (currentNode != startNode) {
+            localPath.AddFirst(mapGrid.GetCellCenterWorld(new Vector3Int(currentNode.gridLocation.x, currentNode.gridLocation.y, 0)));
             currentNode = currentNode.parent;
         }
-        //defaultPath.Reverse();
+
+        return localPath;
+
     }
 
-    private int GetDistance (GridNode nodeA, GridNode nodeB)
-    {
+    int GetDistance(GridNode nodeA, GridNode nodeB) {
+
         int distX = Mathf.Abs(nodeA.gridLocation.x - nodeB.gridLocation.x);
         int distY = Mathf.Abs(nodeA.gridLocation.y - nodeB.gridLocation.y);
 

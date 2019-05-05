@@ -4,4 +4,6 @@ using UnityEngine;
 
 public class Base : Structure {
 
+    [SerializeField] float health;
+
 }

@@ -53,7 +53,7 @@ MonoBehaviour:
     type: 3}
   rotationSpeed: 15
   attacksPerSecond: 10
-  attackDamage: 5
+  attackDamage: 0
 --- !u!58 &8324584823371489552
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -257,11 +257,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4738815374832580544}
     m_Modifications:
-    - target: {fileID: 5268640220645084652, guid: ea9602bc37bd80a489c52e784c6363ab,
-        type: 3}
-      propertyPath: m_Name
-      value: Gunfire Effect
-      objectReference: {fileID: 0}
     - target: {fileID: 982197962374490700, guid: ea9602bc37bd80a489c52e784c6363ab,
         type: 3}
       propertyPath: InitialModule.startSpeed.scalar
@@ -326,6 +321,11 @@ PrefabInstance:
         type: 3}
       propertyPath: NoiseModule.strength.scalar
       value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 5268640220645084652, guid: ea9602bc37bd80a489c52e784c6363ab,
+        type: 3}
+      propertyPath: m_Name
+      value: Gunfire Effect
       objectReference: {fileID: 0}
     - target: {fileID: 3187408413508310879, guid: ea9602bc37bd80a489c52e784c6363ab,
         type: 3}
