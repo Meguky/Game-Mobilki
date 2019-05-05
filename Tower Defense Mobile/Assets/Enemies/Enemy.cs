@@ -36,10 +36,12 @@ public abstract class Enemy : MonoBehaviour, IDamageable<float>{
 
     protected virtual void GetNextTarget() {
 
-        if (currentTargetIndex == PathController.waypoints.Length) {
+        if (currentTargetIndex == PathController.waypoints.Length)
+        {
             return;
         }
-        else {
+        else
+        {
             movementDirection = (PathController.waypoints[currentTargetIndex].position - transform.position).normalized * movementSpeed;
             currentDestination = PathController.waypoints[currentTargetIndex];
             currentTargetIndex++;
