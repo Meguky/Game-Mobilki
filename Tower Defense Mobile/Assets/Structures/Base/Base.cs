@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class Base : Structure {
 
-    [SerializeField] float health;
+    private void Start() {
+        health = 1000.0f;    
+    }
+
+
 
 }

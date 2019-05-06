@@ -35,6 +35,8 @@ public abstract class Enemy : MonoBehaviour, IDamageable<float>{
 
     private void GetNewPath() {
         currentPath = MapManager.instance.FindPathToBaseFrom(transform.position);
+        targetIterator = currentPath.First;
+        GetNextTarget();
     }
 
     public void RegisterAsMapchangeListener() {
