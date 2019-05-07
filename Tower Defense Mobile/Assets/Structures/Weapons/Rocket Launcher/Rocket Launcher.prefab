@@ -77,6 +77,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c701292dd53d51489cbeb83dcbe5791, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buildingCost: 250
   cannonHead: {fileID: 4738815374832580544}
   barrelExit: {fileID: 3934874358182125034}
   usedProjectile: {fileID: 7283128629871834067, guid: e203785c81a67844a8fa6cea910ae001,

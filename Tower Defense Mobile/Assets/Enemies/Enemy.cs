@@ -8,6 +8,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable<float>{
     public class EnemyEvent : UnityEvent<Enemy> { }
 
     protected float health = 100;
+    protected float reward = 10;
     public EnemyEvent OnDeath = new EnemyEvent();
 
     protected LinkedList<Vector3> currentPath = new LinkedList<Vector3>();
@@ -46,6 +47,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable<float>{
     public virtual void Die() {
         //W przyszłości kwestie graficzne umierania (animacje/eksplozje/particle etc.)
         OnDeath.Invoke(this);
+        TowerDefense.GameManager.instance.EarnMoney(reward);
         Destroy(gameObject);
     }
 
@@ -65,11 +67,18 @@ public abstract class Enemy : MonoBehaviour, IDamageable<float>{
 
     protected virtual void Move() {
 
-        transform.Translate(movementDirection * Time.deltaTime, Space.World);
-
+        Vector3 expectedMovement = movementDirection * Time.deltaTime;
         distanceFromNextWaypoint = Vector3.Distance(transform.position, currentDestination);
 
-        if (distanceFromNextWaypoint < 0.2f) {
+        //check if we wont overstep
+        if (expectedMovement.magnitude > distanceFromNextWaypoint) {
+            transform.Translate(currentDestination-transform.position, Space.World);
+        }
+        else {
+            transform.Translate(expectedMovement, Space.World);
+        }
+
+        if ((currentDestination - transform.position).magnitude < 0.05f) {
             GetNextTarget();
         }
     }

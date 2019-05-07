@@ -18,6 +18,8 @@ public class GatlingGun : Weapon {
 
     new void Start() {
 
+        buildingCost = 300;
+
         attacksPerSecond = 1.0f / attacksPerSecond;
         availableEnemies = new List<Enemy>();
         weaponRange = GetComponent<CircleCollider2D>();

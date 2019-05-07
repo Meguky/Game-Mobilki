@@ -4,7 +4,13 @@ using UnityEngine;
 
 public abstract class Structure : MonoBehaviour, IDamageable<float> {
 
-    protected float health = 100;
+    protected float health;
+    [Header("Inherited Parameters")]
+    [SerializeField] protected float buildingCost;
+
+    public float GetBuildingCost() {
+        return buildingCost;
+    }
 
     public void TakeDamage(float dmg) {
         health -= dmg;

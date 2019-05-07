@@ -23,4 +23,5 @@ public class BasicEnemy : Enemy {
             Destroy(gameObject);
         }
     }
+
 }

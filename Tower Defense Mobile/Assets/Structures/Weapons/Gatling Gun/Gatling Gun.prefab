@@ -47,13 +47,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82936a34be18e8846b4dea2f2ec4878b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buildingCost: 300
   cannonHead: {fileID: 4738815374832580544}
   gunfireEffect: {fileID: 6032462299298756745}
   gunshotEffect: {fileID: 8244102512637588874, guid: 5c5a875fb1943df4785d59a5500f2218,
     type: 3}
   rotationSpeed: 15
   attacksPerSecond: 10
-  attackDamage: 0
+  attackDamage: 2
 --- !u!58 &8324584823371489552
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -257,6 +258,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4738815374832580544}
     m_Modifications:
+    - target: {fileID: 5268640220645084652, guid: ea9602bc37bd80a489c52e784c6363ab,
+        type: 3}
+      propertyPath: m_Name
+      value: Gunfire Effect
+      objectReference: {fileID: 0}
     - target: {fileID: 982197962374490700, guid: ea9602bc37bd80a489c52e784c6363ab,
         type: 3}
       propertyPath: InitialModule.startSpeed.scalar
@@ -321,11 +327,6 @@ PrefabInstance:
         type: 3}
       propertyPath: NoiseModule.strength.scalar
       value: 0.05
-      objectReference: {fileID: 0}
-    - target: {fileID: 5268640220645084652, guid: ea9602bc37bd80a489c52e784c6363ab,
-        type: 3}
-      propertyPath: m_Name
-      value: Gunfire Effect
       objectReference: {fileID: 0}
     - target: {fileID: 3187408413508310879, guid: ea9602bc37bd80a489c52e784c6363ab,
         type: 3}

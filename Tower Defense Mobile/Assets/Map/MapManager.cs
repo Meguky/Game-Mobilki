@@ -65,11 +65,15 @@ public class MapManager : MonoBehaviour, IInteractable {
                 LinkedList<Vector3> testPath = FindPathToBaseFrom(spawnerLocation.position);
 
                 if (testPath != null) {
-
-                    defaultPath = testPath;
-                    OnMapChange.Invoke();
-                    structures[cellPosition.x, cellPosition.y] = Instantiate(currentlySelectedStructure, cellCenterPosition+(new Vector3(0,0,1)), transform.rotation);
-
+                    Debug.Log(currentlySelectedStructure.GetBuildingCost());
+                    if (TowerDefense.GameManager.instance.TryPay(currentlySelectedStructure.GetBuildingCost())) {
+                        defaultPath = testPath;
+                        OnMapChange.Invoke();
+                        structures[cellPosition.x, cellPosition.y] = Instantiate(currentlySelectedStructure, cellCenterPosition + (new Vector3(0, 0, 1)), transform.rotation);
+                    }
+                    else {
+                        UIManager.instance.PrintToGameLog("Not enough funds!");
+                    }
                 }
                 else {
                     gridNodes[cellPosition.x, cellPosition.y].isWalkable = true;
@@ -130,7 +134,6 @@ public class MapManager : MonoBehaviour, IInteractable {
 
             GridNode currentNode = openSet[0];
 
-
             for (int i = 1; i < openSet.Count; ++i) {
                 if (openSet[i].fCost < currentNode.fCost || openSet[i].fCost == currentNode.fCost && openSet[i].hCost < currentNode.hCost) {
                     currentNode = openSet[i];
@@ -149,8 +152,36 @@ public class MapManager : MonoBehaviour, IInteractable {
 
             foreach (GridNode neighbour in NodeNeighbours(currentNode)) {
 
-                if (!(neighbour.isWalkable) || closedSet.Contains(neighbour)) {
+                if (!neighbour.isWalkable || closedSet.Contains(neighbour)) {
                     continue;
+                }
+
+                //blokowanie ruchu po skosie przy zabudowanych działkach
+                Vector2Int movementDirection = neighbour.gridLocation - currentNode.gridLocation;
+
+                if (movementDirection.magnitude>1.0f) {
+
+                    int testedX, testedY;
+                    
+                    if (movementDirection.x > 0) {
+                        testedX = currentNode.gridLocation.x + 1;
+                    }
+                    else {
+                        testedX = currentNode.gridLocation.x - 1;
+                    }
+
+                    if (movementDirection.y > 0) {
+                        testedY = currentNode.gridLocation.y + 1;
+                    }
+                    else {
+                        testedY = currentNode.gridLocation.y - 1;
+                    }
+
+                    //blokowanie podróży do po skosie jeśli "zawadza to" o obiekty po drodze
+                    if (!gridNodes[currentNode.gridLocation.x, testedY].isWalkable || !gridNodes[testedX, currentNode.gridLocation.y].isWalkable) {
+                        continue;
+                    }
+
                 }
 
                 int newMovementCostToNeighbour = currentNode.gCost + GetDistance(currentNode, neighbour);
@@ -179,17 +210,29 @@ public class MapManager : MonoBehaviour, IInteractable {
 
         for (int x = -1; x <= 1; ++x) {
             for (int y = -1; y <= 1; ++y) {
-                if (x == 0 && y == 0)
+                if (x == 0 && y == 0) {
                     continue;
+                }
 
                 int checkX = node.gridLocation.x + x;
                 int checkY = node.gridLocation.y + y;
 
-                if (checkX >= 0 && checkX < gridNodes.GetLength(0) && checkY >= 0 && checkY < gridNodes.GetLength(1))
+                if (checkX >= 0 && checkX < gridNodes.GetLength(0) && checkY >= 0 && checkY < gridNodes.GetLength(1)) {
                     neighbours.Add(gridNodes[checkX, checkY]);
+                }
             }
         }
         return neighbours;
+    }
+
+    int GetDistance(GridNode nodeA, GridNode nodeB) {
+
+        int distX = Mathf.Abs(nodeA.gridLocation.x - nodeB.gridLocation.x);
+        int distY = Mathf.Abs(nodeA.gridLocation.y - nodeB.gridLocation.y);
+
+        if (distX > distY)
+            return 14 * distY + 10 * (distX - distY);
+        return 14 * distX + 10 * (distY - distX);
     }
 
     LinkedList<Vector3> TranslatePath(GridNode startNode, GridNode targetNode) {
@@ -204,16 +247,6 @@ public class MapManager : MonoBehaviour, IInteractable {
 
         return localPath;
 
-    }
-
-    int GetDistance(GridNode nodeA, GridNode nodeB) {
-
-        int distX = Mathf.Abs(nodeA.gridLocation.x - nodeB.gridLocation.x);
-        int distY = Mathf.Abs(nodeA.gridLocation.y - nodeB.gridLocation.y);
-
-        if (distX > distY)
-            return 14 * distY + 10 * (distX - distY);
-        return 14 * distX + 10 * (distY - distX);
     }
 
 }

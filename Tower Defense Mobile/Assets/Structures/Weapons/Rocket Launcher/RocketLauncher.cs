@@ -18,6 +18,8 @@ public class RocketLauncher : Weapon {
 
     new void Start() {
 
+        buildingCost = 250;
+
         attacksPerSecond = 1.0f / attacksPerSecond;
         availableEnemies = new List<Enemy>();
         weaponRange = GetComponent<CircleCollider2D>();

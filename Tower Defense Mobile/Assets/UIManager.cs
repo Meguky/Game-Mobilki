@@ -9,6 +9,7 @@ public class UIManager : MonoBehaviour {
 
     [Header("Required References")]
     [SerializeField] private Text gameLog;
+    [SerializeField] private Text moneyTextbox;
 
     // Start is called before the first frame update
     void Start() {
@@ -18,6 +19,7 @@ public class UIManager : MonoBehaviour {
         else {
             Destroy(gameObject);
         }
+        UpdateMoney();
     }
 
     // Update is called once per frame
@@ -49,6 +51,10 @@ public class UIManager : MonoBehaviour {
 
     public void PrintToGameLog(string message) {
         StartCoroutine(ShowMessageOnLog(message));
+    }
+
+    public void UpdateMoney() {
+        moneyTextbox.text = "Funds: " + TowerDefense.GameManager.instance.money + "$";
     }
 
 }

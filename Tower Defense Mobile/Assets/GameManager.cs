@@ -10,6 +10,8 @@ namespace TowerDefense {
 
         private CameraManager cameraManager;
 
+        public float money = 1000;
+
         void Start() {
 
             if (instance == null) {
@@ -22,6 +24,22 @@ namespace TowerDefense {
 
             cameraManager = Camera.main.GetComponent<CameraManager>();
 
+        }
+
+        public void EarnMoney(float amount) {
+            money += amount;
+            UIManager.instance.UpdateMoney();
+        }
+
+        public bool TryPay(float amount) {
+            if (amount <= money) {
+                money -= amount;
+                UIManager.instance.UpdateMoney();
+                return true;
+            }
+            else {
+                return false;
+            }
         }
 
         private void Update() {
@@ -41,7 +59,7 @@ namespace TowerDefense {
 
         void ManageTouch() {
 
-            //Test platformy też żeby kodu ciągle niezmieniać. Może po developmencie wywalić.
+            //Test platformy też żeby kodu ciągle niezmieniać. Można po developmencie wywalić.
             if (Application.platform == RuntimePlatform.Android) {
                 if (Input.touchCount > 0 && Input.touchCount < 2 && !IsPointerOverUIObject()) {
 
