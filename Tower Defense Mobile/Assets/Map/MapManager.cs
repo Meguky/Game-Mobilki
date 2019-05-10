@@ -65,7 +65,6 @@ public class MapManager : MonoBehaviour, IInteractable {
                 LinkedList<Vector3> testPath = FindPathToBaseFrom(spawnerLocation.position);
 
                 if (testPath != null) {
-                    Debug.Log(currentlySelectedStructure.GetBuildingCost());
                     if (TowerDefense.GameManager.instance.TryPay(currentlySelectedStructure.GetBuildingCost())) {
                         defaultPath = testPath;
                         OnMapChange.Invoke();

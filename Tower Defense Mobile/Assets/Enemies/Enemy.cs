@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 public abstract class Enemy : MonoBehaviour, IDamageable<float>{
 
-    public class EnemyEvent : UnityEvent<Enemy> { }
+    [System.Serializable] public class EnemyEvent : UnityEvent<Enemy> { }
 
     protected float health = 100;
     protected float reward = 10;
@@ -24,7 +24,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable<float>{
 
     //zwraca pozycję na ścieżce waypointów i odległość od obecnego celu
     public float[] DistanceToBase() {
-        return new[] { currentTargetIndex, distanceFromNextWaypoint };
+        return new[] { currentPath.Count-currentTargetIndex, distanceFromNextWaypoint };
     }
 
     public void TakeDamage(float dmg) {
@@ -37,6 +37,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable<float>{
     private void GetNewPath() {
         currentPath = MapManager.instance.FindPathToBaseFrom(transform.position);
         targetIterator = currentPath.First;
+        currentTargetIndex = 0;
         GetNextTarget();
     }
 

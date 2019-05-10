@@ -13,13 +13,13 @@ public abstract class Weapon : Structure {
 
     protected void TrackEnemy() {
 
-        float[] min = { float.NegativeInfinity, float.PositiveInfinity };
+        float[] min = { float.PositiveInfinity, float.PositiveInfinity };
 
         foreach (Enemy enemy in availableEnemies) {
 
             float[] currentEnemyDistance = enemy.DistanceToBase();
 
-            if (currentEnemyDistance[0]>min[0] || (currentEnemyDistance[0] == min[0] && currentEnemyDistance[1]<min[1])) {
+            if (currentEnemyDistance[0]<min[0] || (currentEnemyDistance[0] == min[0] && currentEnemyDistance[1]<min[1])) {
 
                 trackedEnemy = enemy;
                 min[0] = currentEnemyDistance[0];

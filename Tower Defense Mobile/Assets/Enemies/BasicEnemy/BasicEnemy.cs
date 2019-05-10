@@ -20,7 +20,7 @@ public class BasicEnemy : Enemy {
     void OnTriggerEnter2D(Collider2D other) {
         if (other.tag.Equals("Structure")) {
             other.GetComponent<Structure>().TakeDamage(10);
-            Destroy(gameObject);
+            Die();
         }
     }
 

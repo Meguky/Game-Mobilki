@@ -46,18 +46,9 @@ public class RocketLauncher : Weapon {
         if (currCooldown>= attacksPerSecond) {
 
             HomingMissle newProjectile = Instantiate(usedProjectile, barrelExit.position, barrelExit.rotation);
-            newProjectile.InitialiseBullet(trackedEnemy.transform, this);
+            newProjectile.Initialise(trackedEnemy.transform);
             currCooldown = 0;
 
-        }
-    }
-
-    public Transform GetTargetUpdate() {
-        if (trackedEnemy != null) {
-            return trackedEnemy.transform;
-        }
-        else {
-            return null;
         }
     }
 
