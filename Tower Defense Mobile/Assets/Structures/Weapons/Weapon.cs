@@ -32,6 +32,8 @@ public abstract class Weapon : Structure {
 
     protected void Start() {
 
+        InitialiseValues();
+
         availableEnemies = new List<Enemy>();
         weaponRange = GetComponent<CircleCollider2D>();
 

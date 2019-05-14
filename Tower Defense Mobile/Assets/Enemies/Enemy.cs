@@ -2,21 +2,51 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
-public abstract class Enemy : MonoBehaviour, IDamageable<float>{
+public abstract class Enemy : MonoBehaviour, IDamageable<float> {
 
     [System.Serializable] public class EnemyEvent : UnityEvent<Enemy> { }
-
-    protected float health = 100;
-    protected float reward = 10;
     public EnemyEvent OnDeath = new EnemyEvent();
+
+    [Header("Inherited values")]
+    [SerializeField] protected float maxHealth = 100;
+    protected float health;
+    [SerializeField] protected float killingReward;
+    [SerializeField] protected GameObject healthBar;
+    [SerializeField] protected Image healthBarFilling;
+
+    protected void InitialiseValues() {
+        health = maxHealth;
+    }
+
+    IEnumerator FluentlyUpdateHealthbar() {
+
+        if (!healthBar.activeInHierarchy) {
+            healthBar.SetActive(true);
+        }
+
+        float elapsedTime = 0;
+        float healthbarScalingTime = 0.1f;
+        float startFillAmount = healthBarFilling.fillAmount;
+        float targetFillAmount = health/maxHealth;
+
+        while (healthBarFilling.fillAmount != targetFillAmount) {
+
+            healthBarFilling.fillAmount = Mathf.Lerp(startFillAmount, targetFillAmount, Mathf.Clamp01(elapsedTime / healthbarScalingTime));
+
+            elapsedTime += Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+
+        }
+
+    }
 
     protected LinkedList<Vector3> currentPath = new LinkedList<Vector3>();
     protected LinkedListNode<Vector3> targetIterator;
-    
+
     Vector3 movementDirection;
     Vector3 currentDestination;
-
 
     int currentTargetIndex = 0;
     protected float distanceFromNextWaypoint;
@@ -24,11 +54,12 @@ public abstract class Enemy : MonoBehaviour, IDamageable<float>{
 
     //zwraca pozycję na ścieżce waypointów i odległość od obecnego celu
     public float[] DistanceToBase() {
-        return new[] { currentPath.Count-currentTargetIndex, distanceFromNextWaypoint };
+        return new[] { currentPath.Count - currentTargetIndex, distanceFromNextWaypoint };
     }
 
     public void TakeDamage(float dmg) {
         health -= dmg;
+        StartCoroutine(FluentlyUpdateHealthbar());
         if (health <= 0) {
             Die();
         }
@@ -48,7 +79,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable<float>{
     public virtual void Die() {
         //W przyszłości kwestie graficzne umierania (animacje/eksplozje/particle etc.)
         OnDeath.Invoke(this);
-        TowerDefense.GameManager.instance.EarnMoney(reward);
+        TowerDefense.GameManager.instance.EarnMoney(killingReward);
         Destroy(gameObject);
     }
 
@@ -73,7 +104,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable<float>{
 
         //check if we wont overstep
         if (expectedMovement.magnitude > distanceFromNextWaypoint) {
-            transform.Translate(currentDestination-transform.position, Space.World);
+            transform.Translate(currentDestination - transform.position, Space.World);
         }
         else {
             transform.Translate(expectedMovement, Space.World);
