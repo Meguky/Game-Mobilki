@@ -11,15 +11,23 @@ public abstract class Enemy : MonoBehaviour, IDamageable<float> {
 
     [Header("Inherited values")]
     [SerializeField] protected float maxHealth = 100;
-    protected float health;
+    [SerializeField] protected float defaultDamage = 10;
+    [SerializeField] protected float health;
+    [SerializeField] protected float damage;
     [SerializeField] protected float killingReward;
     [SerializeField] protected GameObject healthBar;
     [SerializeField] protected Image healthBarFilling;
 
     protected void InitialiseValues() {
         health = maxHealth;
+        damage = defaultDamage;
     }
 
+    public void setup(float _health, float _damage){
+        maxHealth = _health;
+        health = maxHealth;
+        damage = _damage;
+    }
     IEnumerator FluentlyUpdateHealthbar() {
 
         if (!healthBar.activeInHierarchy) {

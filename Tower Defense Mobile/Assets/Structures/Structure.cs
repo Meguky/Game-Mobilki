@@ -8,7 +8,7 @@ public abstract class Structure : MonoBehaviour, IDamageable<float> {
     [Header("Inherited Parameters")]
     [SerializeField] protected float buildingCost;
     [SerializeField] protected float maxHealth = 100;
-    protected float health;
+    [SerializeField] protected float health;
     [SerializeField] protected GameObject healthBar;
     [SerializeField] protected Image healthBarFilling;
 
@@ -16,10 +16,17 @@ public abstract class Structure : MonoBehaviour, IDamageable<float> {
         health = maxHealth;
     }
 
+    public void setup(float _health){
+        maxHealth = _health;
+        health = maxHealth;
+    }
     public float GetBuildingCost() {
         return buildingCost;
     }
 
+    public float getHealth(){
+        return health;
+    }
     public void TakeDamage(float dmg) {
         health -= dmg;
         StartCoroutine(FluentlyUpdateHealthbar());
@@ -51,7 +58,7 @@ public abstract class Structure : MonoBehaviour, IDamageable<float> {
 
     public virtual void Die() {
         //W przyszłości kwestie graficzne umierania (animacje/eksplozje/particle etc.)
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 
 }

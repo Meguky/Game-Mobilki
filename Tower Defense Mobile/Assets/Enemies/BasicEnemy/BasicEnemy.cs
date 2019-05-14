@@ -6,15 +6,11 @@ public class BasicEnemy : Enemy {
     
     // Start is called before the first frame update
     void Start() {
-
-        InitialiseValues();
-
         RegisterAsMapchangeListener();
         currentPath = MapManager.instance.defaultPath;
         targetIterator = currentPath.First;
         GetNextTarget();
     }
-
     // Update is called once per frame
     void Update() {
         Move();
@@ -22,7 +18,7 @@ public class BasicEnemy : Enemy {
 
     void OnTriggerEnter2D(Collider2D other) {
         if (other.tag.Equals("Structure")) {
-            other.GetComponent<Structure>().TakeDamage(10);
+            other.GetComponent<Structure>().TakeDamage(damage);
             Die();
         }
     }
