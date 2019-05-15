@@ -25,10 +25,12 @@ namespace TowerDefense {
         public float monsterHealthMultiplier = 3f;
         public float monsterDamageMultiplier = 5f;
         public float monsterDensityMultiplier = 1f;
+        public float monsterRewardMultiplier = 1f;
         [Header("Enemies parameters")]
         public int enemiesInWave = 5;
         public float enemyDamage = 10;
         public float enemyHealth = 100;
+        public float enemyReward = 25;
         public float spawnIntervals = 0.5f;
         public Enemy[] enemiesTypes;
         public Transform spawnPoint;
@@ -50,11 +52,13 @@ namespace TowerDefense {
 
             startWaveTime = new WaitForSeconds(startDelay);
             endWaveTime = new WaitForSeconds(endDelay);
+            //Symulacja waveów
             if(startWave > 1){
                 for(int i = 0 ; i < startWave;i++){
                     enemyHealth = enemyHealth + i * monsterHealthMultiplier;
                     enemyDamage = enemyDamage + i * monsterDamageMultiplier;
                     enemiesInWave = enemiesInWave + Mathf.RoundToInt(i * monsterDensityMultiplier / 40);
+                    enemyReward = enemyReward + i * monsterRewardMultiplier;
                 }   
                 waveNumber = startWave;
             }
@@ -101,7 +105,7 @@ namespace TowerDefense {
             for(int i = 0; i < enemiesInWave;i++){
                 enemyInstance = Instantiate(enemiesTypes[0],spawnPoint.position,spawnPoint.rotation);
                 enemyInstance.OnDeath.AddListener(OnEnemyDeath);
-                enemyInstance.setup(enemyHealth, enemyDamage);
+                enemyInstance.setup(enemyHealth, enemyDamage, enemyReward);
                 enemiesCount++;
                 waveAnnouncer.text = "Enemies left in wave: " + enemiesCount;
                 yield return new WaitForSeconds(spawnIntervals);
@@ -131,9 +135,10 @@ namespace TowerDefense {
             }else{
                 waveNumber++;
                 waveAnnouncer.text = "Wave beaten, next wave is approaching!";
-                enemyHealth = enemyHealth + waveNumber * 10;
-                enemyDamage = enemyDamage + waveNumber * 20;
-                enemiesInWave = enemiesInWave + Mathf.RoundToInt(waveNumber / 5.0f);
+                enemyHealth = enemyHealth + waveNumber * monsterHealthMultiplier;
+                enemyDamage = enemyDamage + waveNumber * monsterDamageMultiplier;
+                enemiesInWave = enemiesInWave + Mathf.RoundToInt(monsterDensityMultiplier * waveNumber / 5.0f);
+                enemyReward = enemyReward + waveNumber * monsterRewardMultiplier;
             }
             yield return endWaveTime;
         }

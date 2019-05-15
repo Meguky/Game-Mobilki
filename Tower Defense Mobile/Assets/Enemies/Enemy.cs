@@ -23,10 +23,11 @@ public abstract class Enemy : MonoBehaviour, IDamageable<float> {
         damage = defaultDamage;
     }
 
-    public void setup(float _health, float _damage){
+    public void setup(float _health, float _damage, float _reward){
         maxHealth = _health;
         health = maxHealth;
         damage = _damage;
+        killingReward = _reward;
     }
     IEnumerator FluentlyUpdateHealthbar() {
 
