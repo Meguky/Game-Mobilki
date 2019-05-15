@@ -7,33 +7,37 @@ using UnityEngine.UI;
 public abstract class Enemy : MonoBehaviour, IDamageable<float> {
 
     [System.Serializable] public class EnemyEvent : UnityEvent<Enemy> { }
-    public EnemyEvent OnDeath = new EnemyEvent();
+    [HideInInspector] public EnemyEvent OnDeath = new EnemyEvent();
 
     [Header("Inherited values")]
-    [SerializeField] protected float maxHealth = 100;
-    [SerializeField] protected float defaultDamage = 10;
-    [SerializeField] protected float health;
-    [SerializeField] protected float damage;
+    [SerializeField] protected float maxHealth;
+    protected float health;
+    [SerializeField] protected float defaultDamage;
+    protected float damage;
     [SerializeField] protected float killingReward;
+
     [SerializeField] protected GameObject healthBar;
     [SerializeField] protected Image healthBarFilling;
+    [SerializeField] protected Text healthValue; 
 
     protected void InitialiseValues() {
         health = maxHealth;
         damage = defaultDamage;
     }
 
-    public void setup(float _health, float _damage, float _reward){
+    public void InitialiseWithParameters(float _health, float _damage, float _reward){
         maxHealth = _health;
-        health = maxHealth;
-        damage = _damage;
+        defaultDamage = _damage;
         killingReward = _reward;
     }
-    IEnumerator FluentlyUpdateHealthbar() {
+
+    IEnumerator UpdateHealthbar() {
 
         if (!healthBar.activeInHierarchy) {
             healthBar.SetActive(true);
         }
+
+        healthValue.text = health.ToString();
 
         float elapsedTime = 0;
         float healthbarScalingTime = 0.1f;
@@ -68,7 +72,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable<float> {
 
     public void TakeDamage(float dmg) {
         health -= dmg;
-        StartCoroutine(FluentlyUpdateHealthbar());
+        StartCoroutine(UpdateHealthbar());
         if (health <= 0) {
             Die();
         }
@@ -119,7 +123,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable<float> {
             transform.Translate(expectedMovement, Space.World);
         }
 
-        if ((currentDestination - transform.position).magnitude < 0.05f) {
+        if (currentDestination == transform.position) {
             GetNextTarget();
         }
     }

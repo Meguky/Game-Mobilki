@@ -105,7 +105,7 @@ namespace TowerDefense {
             for(int i = 0; i < enemiesInWave;i++){
                 enemyInstance = Instantiate(enemiesTypes[0],spawnPoint.position,spawnPoint.rotation);
                 enemyInstance.OnDeath.AddListener(OnEnemyDeath);
-                enemyInstance.setup(enemyHealth, enemyDamage, enemyReward);
+                enemyInstance.InitialiseWithParameters(enemyHealth, enemyDamage, enemyReward);
                 enemiesCount++;
                 waveAnnouncer.text = "Enemies left in wave: " + enemiesCount;
                 yield return new WaitForSeconds(spawnIntervals);

@@ -6,6 +6,9 @@ public class BasicEnemy : Enemy {
     
     // Start is called before the first frame update
     void Start() {
+
+        InitialiseValues();
+
         RegisterAsMapchangeListener();
         currentPath = MapManager.instance.defaultPath;
         targetIterator = currentPath.First;

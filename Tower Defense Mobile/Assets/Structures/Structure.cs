@@ -8,9 +8,11 @@ public abstract class Structure : MonoBehaviour, IDamageable<float> {
     [Header("Inherited Parameters")]
     [SerializeField] protected float buildingCost;
     [SerializeField] protected float maxHealth = 100;
-    [SerializeField] protected float health;
+    protected float health;
+
     [SerializeField] protected GameObject healthBar;
     [SerializeField] protected Image healthBarFilling;
+    [SerializeField] protected Text healthValue;
 
     protected void InitialiseValues() {
         health = maxHealth;
@@ -39,6 +41,8 @@ public abstract class Structure : MonoBehaviour, IDamageable<float> {
         if (!healthBar.activeInHierarchy) {
             healthBar.SetActive(true);
         }
+
+        healthValue.text = health.ToString();
 
         float elapsedTime = 0;
         float healthbarScalingTime = 0.1f;
