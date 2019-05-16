@@ -60,6 +60,8 @@ public abstract class Weapon : Structure {
         }
     }
 
+    public override void Upgrade() { }
+
     protected void OnTriggerExit2D(Collider2D other) {
         if (other.tag.Equals("Enemy")) {
             Enemy enemy = other.GetComponent<Enemy>();

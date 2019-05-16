@@ -12,4 +12,9 @@ public class Wall : Structure {
     void Update() {
 
     }
+
+    public override void Upgrade()
+    {
+        return;
+    }
 }

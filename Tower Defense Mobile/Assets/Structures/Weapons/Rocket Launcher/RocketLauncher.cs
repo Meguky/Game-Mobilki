@@ -52,6 +52,12 @@ public class RocketLauncher : Weapon {
         }
     }
 
+    //trzeba to zrobić inaczej, ulepszenie jednej wyrzutni zwieksza damage rakiet z kazdej wyrzutni
+    public override void Upgrade()
+    {
+        usedProjectile.IncreaseDamage();
+    }
+
     new void Update() {
         if (availableEnemies.Count != 0) {
             TrackEnemy();

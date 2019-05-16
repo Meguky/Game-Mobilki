@@ -53,6 +53,12 @@ public class GatlingGun : Weapon {
         }
     }
 
+    //test
+    public override void Upgrade()
+    {
+        attackDamage += 5f;
+    }
+
     new void Update() {
         if (availableEnemies.Count != 0) {
             TrackEnemy();

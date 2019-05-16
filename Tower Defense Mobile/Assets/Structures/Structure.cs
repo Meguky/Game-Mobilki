@@ -60,6 +60,8 @@ public abstract class Structure : MonoBehaviour, IDamageable<float> {
 
     }
 
+    public abstract void Upgrade();
+
     public virtual void Die() {
         //W przyszłości kwestie graficzne umierania (animacje/eksplozje/particle etc.)
         gameObject.SetActive(false);

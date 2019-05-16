@@ -105,6 +105,11 @@ public class HomingMissle : MonoBehaviour {
 
     }
 
+    public void IncreaseDamage()
+    {
+        damage += 10;
+    }
+
     void Explode() {
 
         Instantiate(explosionEffect, transform.position, transform.rotation);

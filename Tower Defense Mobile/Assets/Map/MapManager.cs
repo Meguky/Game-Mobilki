@@ -6,10 +6,12 @@ using UnityEngine.Events;
 public class MapManager : MonoBehaviour, IInteractable {
 
     public static MapManager instance;
+    [HideInInspector] public StructureUI structUI;
 
     private Grid mapGrid;
 
     private Structure currentlySelectedStructure;
+    private Structure currentlySelectedStructureOnMap;
     private Structure[,] structures = new Structure[18, 28];
 
     [Header("Pathfinding")]
@@ -33,7 +35,6 @@ public class MapManager : MonoBehaviour, IInteractable {
         }
 
         mapGrid = GetComponent<Grid>();
-
         OnMapChange = new UnityEvent();
 
         //Inicjalizacja grida
@@ -82,19 +83,39 @@ public class MapManager : MonoBehaviour, IInteractable {
 
             }
             else {
-                UIManager.instance.PrintToGameLog("Select a structure first!");
+                //UIManager.instance.PrintToGameLog("Select a structure first!");
+                UnsetSelectedStuctureOnMap();
             }
 
         }
         else {
-
-            //Placeholder. Potem zrobić otwieranie menu ulepszania / niszczenia struktur
-            UIManager.instance.PrintToGameLog("Can't build ontop of other structure!");
+            SetSelectedStuctureOnMapTo(structures[cellPosition.x, cellPosition.y]);
         }
     }
 
     public void SetSelectedStuctureTo(Structure structure) {
         currentlySelectedStructure = structure;
+        UnsetSelectedStuctureOnMap();
+    }
+    public void SetSelectedStuctureOnMapTo(Structure structure)
+    {
+        if (currentlySelectedStructureOnMap == structure)
+        {
+            UnsetSelectedStuctureOnMap();
+            return;
+        }
+        currentlySelectedStructureOnMap = structure;
+        currentlySelectedStructure = null;
+
+        structUI.setTargetStructure(structure);
+        structUI.setVisibility(true);
+    }
+
+    public void UnsetSelectedStuctureOnMap()
+    {
+        currentlySelectedStructureOnMap = null;
+        structUI.setTargetStructure(null);
+        structUI.setVisibility(false);
     }
 
     public class GridNode {

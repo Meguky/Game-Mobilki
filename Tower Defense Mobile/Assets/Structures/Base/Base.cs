@@ -8,6 +8,10 @@ public class Base : Structure {
         health = 1000.0f;    
     }
 
+    public override void Upgrade()
+    {
+        return;
+    }
 
 
 }
