@@ -79,7 +79,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable<float> {
     }
 
     private void GetNewPath() {
-        currentPath = MapManager.instance.FindPathToBaseFrom(transform.position);
+        currentPath = MapManager.instance.FindGroundPathToBaseFrom(transform.position);
         targetIterator = currentPath.First;
         currentTargetIndex = 0;
         GetNextTarget();
