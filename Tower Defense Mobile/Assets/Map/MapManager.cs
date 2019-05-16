@@ -70,6 +70,28 @@ public class MapManager : MonoBehaviour, IInteractable {
 
     public void SetSelectedStuctureTo(Structure structure) {
         currentlySelectedStructure = structure;
+        UnsetSelectedStuctureOnMap();
+    }
+	
+    public void SetSelectedStuctureOnMapTo(Structure structure)
+    {
+        if (currentlySelectedStructureOnMap == structure)
+        {
+            UnsetSelectedStuctureOnMap();
+            return;
+        }
+        currentlySelectedStructureOnMap = structure;
+        currentlySelectedStructure = null;
+
+        structUI.setTargetStructure(structure);
+        structUI.setVisibility(true);
+    }
+
+    public void UnsetSelectedStuctureOnMap()
+    {
+        currentlySelectedStructureOnMap = null;
+        structUI.setTargetStructure(null);
+        structUI.setVisibility(false);
     }
 
     public void SingleTap(Vector3 click) {
@@ -105,17 +127,15 @@ public class MapManager : MonoBehaviour, IInteractable {
 
                 }
                 else {
-                    UIManager.instance.PrintToGameLog("Select a structure first!");
+                    UnsetSelectedStuctureOnMap();
                 }
 
             }
             else {
-                //UIManager.instance.PrintToGameLog("Select a structure first!");
-                UnsetSelectedStuctureOnMap();
+                SetSelectedStuctureOnMapTo(mapTiles[cellPosition.x, cellPosition.y].builtStructure);              
             }
         }
-        else {
-            SetSelectedStuctureOnMapTo(structures[cellPosition.x, cellPosition.y]);
+        else {            
             UIManager.instance.PrintToGameLog("Can't build there!");
         }
     }

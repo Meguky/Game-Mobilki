@@ -1028,7 +1028,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1802,6 +1802,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caa7d6ce7665ccb408dd1487f7382e2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &1266750312 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8782928201525512928, guid: 418dc24033e09c142aabb70c2d8e570d,
+    type: 3}
+  m_PrefabInstance: {fileID: 8459153164084945547}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1317637990
 GameObject:
   m_ObjectHideFlags: 0
@@ -1853,7 +1859,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -2790,7 +2796,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
-  m_SortingLayerID: 0
+  m_SortingLayerID: -1225997139
   m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!1 &2131465235
@@ -2997,7 +3003,7 @@ PrefabInstance:
         type: 3}
       propertyPath: baseLocation
       value: 
-      objectReference: {fileID: 8459153164084945548}
+      objectReference: {fileID: 1266750312}
     - target: {fileID: 8459153162793446446, guid: 418dc24033e09c142aabb70c2d8e570d,
         type: 3}
       propertyPath: structUI
