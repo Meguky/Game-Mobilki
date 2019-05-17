@@ -22,7 +22,12 @@ public class RocketLauncher : Weapon {
         attacksPerSecond = 1.0f / attacksPerSecond;
         availableEnemies = new List<Enemy>();
         weaponRange = GetComponent<CircleCollider2D>();
-
+        structureName = "RocketLauncher";
+        if(structureLevel > 1){
+            for(int i = 0; i < structureLevel; i++){
+                Upgrade();
+            }
+        }
     }
 
     void RotateCannonTowardsEnemy() {

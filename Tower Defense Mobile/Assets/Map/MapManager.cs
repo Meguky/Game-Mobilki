@@ -8,34 +8,8 @@ public class MapManager : MonoBehaviour, IInteractable {
 
     public static MapManager instance;
     private TowerDefense.GameManager gameManager;
-
-    public class MapTile {
-
-        public enum TileType { Walkable, NonWalkable, NonFlyable }
-
-        //core info
-        public Vector2Int gridLocation;
-
-        //building
-        public bool buildable = true;
-        public TileType tileType = TileType.Walkable;
-        public Structure builtStructure = null;
-
-        //pathfinding
-        public MapTile parent = null;
-        public int gCost;
-        public int hCost;
-
-        public int fCost {
-            get { return gCost + hCost; }
-        }
-
-    }
-
     private Grid mapGrid;
-
     private MapTile[,] mapTiles = new MapTile[18, 28];
-
     private Structure currentlySelectedStructure;
     private MapTile highlightedTile;
 
@@ -64,11 +38,13 @@ public class MapManager : MonoBehaviour, IInteractable {
 
         mapGrid = GetComponent<Grid>();
         gameManager = TowerDefense.GameManager.instance;
-
         InitialiseGridInfo();
-
         defaultPath = FindGroundPathToBaseFrom(spawnerLocation.position);
 
+    }
+
+    public MapTile[,] getMap(){
+        return mapTiles;
     }
 
     public void SingleTap(Vector3 click) {
@@ -163,12 +139,13 @@ public class MapManager : MonoBehaviour, IInteractable {
     }
 
     private void InitialiseGridInfo() {
-
+        Debug.Log("Initializing map");
         for (int j = 0; j < 28; ++j) {
             for (int i = 0; i < 18; ++i) {
 
                 mapTiles[i, j] = new MapTile {
-                    gridLocation = new Vector2Int(i, j)
+                    gridLocation = new Vector2Int(i, j),
+                    builtStructure = null
                 };
 
                 Vector3Int tilemapPosition = new Vector3Int(i, j, 0);
@@ -184,12 +161,9 @@ public class MapManager : MonoBehaviour, IInteractable {
                 else if (nonWalkableLayer.GetTile(tilemapPosition) != null) {
                     mapTiles[i, j].tileType = MapTile.TileType.NonWalkable;
                 }
-
             }
         }
-
     }
-
     public LinkedList<Vector3> FindGroundPathToBaseFrom(Vector3 startLoc) {
 
         Vector3Int startCellIndex = mapGrid.WorldToCell(startLoc);

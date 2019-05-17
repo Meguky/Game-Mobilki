@@ -5,7 +5,7 @@ using UnityEngine;
 public class Base : Structure {
 
     private void Start() {
-        replenishHealth();
+        initializeValues(100,1);
     }
 
     public override void Upgrade() {

@@ -6,17 +6,21 @@ using UnityEngine.UI;
 public abstract class Structure : MonoBehaviour, IDamageable<float> {
 
     [Header("Inherited Parameters")]
+    protected string structureName;  
     [SerializeField] protected float buildingCost;
+    protected int structureLevel;
     [SerializeField] protected float upgradeCost;
-    [SerializeField] protected float maxHealth = 100;
+    [SerializeField] protected float maxHealth;
     protected float health;
-
     [SerializeField] protected GameObject healthBar;
     [SerializeField] protected Image healthBarFilling;
     [SerializeField] protected Text healthValue;
 
-    protected void InitialiseValues() {
+    public void initializeValues(float _health, int _level) {
+        maxHealth = _health;
         health = maxHealth;
+        structureLevel = _level;
+        structureName = "";
     }
 
     public void replenishHealth(){
@@ -33,6 +37,12 @@ public abstract class Structure : MonoBehaviour, IDamageable<float> {
     public float GetHealth(){
         return health;
     }
+    public string getStructureName(){
+        return structureName;
+    }
+    public int getStructureLevel(){
+        return structureLevel;
+    }
     public void TakeDamage(float dmg) {
         health -= dmg;
         StartCoroutine(FluentlyUpdateHealthbar());
@@ -40,7 +50,7 @@ public abstract class Structure : MonoBehaviour, IDamageable<float> {
             Die();
         }
     }
-    IEnumerator FluentlyUpdateHealthbar() {
+    public IEnumerator FluentlyUpdateHealthbar() {
 
         if (!healthBar.activeInHierarchy) {
             healthBar.SetActive(true);
@@ -74,6 +84,7 @@ public abstract class Structure : MonoBehaviour, IDamageable<float> {
     public virtual void Die() {
         //W przyszłości kwestie graficzne umierania (animacje/eksplozje/particle etc.)
         gameObject.SetActive(false);
+        healthBar.SetActive(false);
     }
 
 }

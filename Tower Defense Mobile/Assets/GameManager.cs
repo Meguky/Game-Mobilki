@@ -8,7 +8,6 @@ namespace TowerDefense {
     public class GameManager : MonoBehaviour {
 
         public static GameManager instance;
-
         private CameraManager cameraManager;
         private WaitForSeconds startWaveTime;
         private WaitForSeconds endWaveTime;
@@ -17,7 +16,7 @@ namespace TowerDefense {
 
         [Header("Player parameters")]
         [SerializeField] private Structure playerBase;
-        [SerializeField] private float playerBaseHealth = 1000;
+        [SerializeField] private float playerBaseHealth = 100;
         public float money;
         [SerializeField] private Text waveAnnouncer;
 
@@ -57,7 +56,7 @@ namespace TowerDefense {
 
             startWaveTime = new WaitForSeconds(startDelay);
             endWaveTime = new WaitForSeconds(endDelay);
-            
+            playerBase.initializeValues(playerBaseHealth,1);
             //Symulacja waveów
             if(startWave > 1){
                 for(int i = 0 ; i < startWave;i++){
