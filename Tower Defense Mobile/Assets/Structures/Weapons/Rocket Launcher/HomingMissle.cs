@@ -12,12 +12,13 @@ public class HomingMissle : MonoBehaviour {
     [SerializeField] float rotationSpeed = 0.5f;
     [SerializeField] float movementSpeed = 10;
     [SerializeField] float explosionRadius;
-    [SerializeField] float damage = 20;
+    private float explosionDamage;
 
     Transform trackedTarget;
     List<Enemy> availableEnemies = new List<Enemy>();
 
-    public void Initialise(Transform initialTarget) {
+    public void Initialise(Transform initialTarget, float damage) {
+        explosionDamage = damage;
         trackedTarget = initialTarget;
         EnemyEnteredRange(initialTarget.GetComponent<Enemy>());
     }
@@ -47,7 +48,7 @@ public class HomingMissle : MonoBehaviour {
 
         }
         else {
-            transform.Translate(transform.up * movementSpeed * Time.deltaTime);
+            Explode();
         }
 
     }
@@ -107,7 +108,7 @@ public class HomingMissle : MonoBehaviour {
 
     public void IncreaseDamage()
     {
-        damage += 10;
+        explosionDamage += 10;
     }
 
     void Explode() {
@@ -119,7 +120,7 @@ public class HomingMissle : MonoBehaviour {
         foreach (Collider2D collider in overlappingColliders) {
 
             if (collider.tag.Equals("Enemy")) {
-                collider.GetComponent<Enemy>().TakeDamage(damage);
+                collider.GetComponent<Enemy>().TakeDamage(explosionDamage);
             }
 
         }

@@ -5,11 +5,10 @@ using UnityEngine;
 public class Base : Structure {
 
     private void Start() {
-        health = 1000.0f;    
+        replenishHealth();
     }
 
-    public override void Upgrade()
-    {
+    public override void Upgrade() {
         return;
     }
 

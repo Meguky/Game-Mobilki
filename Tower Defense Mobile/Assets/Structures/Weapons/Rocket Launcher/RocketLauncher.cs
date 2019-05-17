@@ -14,11 +14,10 @@ public class RocketLauncher : Weapon {
     [Header("Parameters")]
     [SerializeField] float rotationSpeed = 15.0f;
     [SerializeField] float attacksPerSecond = 3f;
+    [SerializeField] float rocketDamage = 30f;
     float currCooldown = 0;
 
     new void Start() {
-
-        buildingCost = 250;
 
         attacksPerSecond = 1.0f / attacksPerSecond;
         availableEnemies = new List<Enemy>();
@@ -43,19 +42,23 @@ public class RocketLauncher : Weapon {
 
         currCooldown += Time.deltaTime;
 
-        if (currCooldown>= attacksPerSecond) {
+        if (currCooldown >= attacksPerSecond) {
 
             HomingMissle newProjectile = Instantiate(usedProjectile, barrelExit.position, barrelExit.rotation);
-            newProjectile.Initialise(trackedEnemy.transform);
+            newProjectile.Initialise(trackedEnemy.transform, rocketDamage);
             currCooldown = 0;
 
         }
     }
 
     //trzeba to zrobić inaczej, ulepszenie jednej wyrzutni zwieksza damage rakiet z kazdej wyrzutni
-    public override void Upgrade()
-    {
-        usedProjectile.IncreaseDamage();
+    public override void Upgrade() {
+
+        buildingCost += upgradeCost;
+        upgradeCost *= 2f;
+
+        rocketDamage *= 2f;
+
     }
 
     new void Update() {

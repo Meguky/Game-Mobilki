@@ -103,7 +103,7 @@ public class UIManager : MonoBehaviour {
     }
 
     public void UpdateMoney() {
-        moneyTextbox.text = "Funds: " + TowerDefense.GameManager.instance.money + "$";
+        moneyTextbox.text = "Funds: " + Mathf.Round(TowerDefense.GameManager.instance.money) + "$";
     }
 
 }

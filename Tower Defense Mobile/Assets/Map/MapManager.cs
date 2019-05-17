@@ -7,7 +7,7 @@ using UnityEngine.Tilemaps;
 public class MapManager : MonoBehaviour, IInteractable {
 
     public static MapManager instance;
-    [HideInInspector] public StructureUI structUI;
+    private TowerDefense.GameManager gameManager;
 
     public class MapTile {
 
@@ -37,7 +37,7 @@ public class MapManager : MonoBehaviour, IInteractable {
     private MapTile[,] mapTiles = new MapTile[18, 28];
 
     private Structure currentlySelectedStructure;
-    private Structure currentlySelectedStructureOnMap;
+    private MapTile highlightedTile;
 
     [Header("Pathfinding")]
     [SerializeField] Transform spawnerLocation;
@@ -48,6 +48,8 @@ public class MapManager : MonoBehaviour, IInteractable {
     [HideInInspector] public UnityEvent OnMapChange = new UnityEvent();
 
     public LinkedList<Vector3> defaultPath = new LinkedList<Vector3>();
+
+    [SerializeField] private Transform structureContextMenu;
 
     // Start is called before the first frame update
     void Start() {
@@ -61,37 +63,12 @@ public class MapManager : MonoBehaviour, IInteractable {
         }
 
         mapGrid = GetComponent<Grid>();
+        gameManager = TowerDefense.GameManager.instance;
 
         InitialiseGridInfo();
-        
+
         defaultPath = FindGroundPathToBaseFrom(spawnerLocation.position);
 
-    }
-
-    public void SetSelectedStuctureTo(Structure structure) {
-        currentlySelectedStructure = structure;
-        UnsetSelectedStuctureOnMap();
-    }
-	
-    public void SetSelectedStuctureOnMapTo(Structure structure)
-    {
-        if (currentlySelectedStructureOnMap == structure)
-        {
-            UnsetSelectedStuctureOnMap();
-            return;
-        }
-        currentlySelectedStructureOnMap = structure;
-        currentlySelectedStructure = null;
-
-        structUI.setTargetStructure(structure);
-        structUI.setVisibility(true);
-    }
-
-    public void UnsetSelectedStuctureOnMap()
-    {
-        currentlySelectedStructureOnMap = null;
-        structUI.setTargetStructure(null);
-        structUI.setVisibility(false);
     }
 
     public void SingleTap(Vector3 click) {
@@ -99,7 +76,10 @@ public class MapManager : MonoBehaviour, IInteractable {
         Vector3Int cellPosition = mapGrid.WorldToCell(click);
         Vector3 cellCenterPosition = mapGrid.GetCellCenterWorld(cellPosition);
 
-        if (mapTiles[cellPosition.x, cellPosition.y].buildable) {
+        if (highlightedTile != null) {
+            UnhighlightTile();
+        }
+        else if (mapTiles[cellPosition.x, cellPosition.y].buildable) {
 
             if (mapTiles[cellPosition.x, cellPosition.y].builtStructure == null) {
 
@@ -110,7 +90,7 @@ public class MapManager : MonoBehaviour, IInteractable {
                     LinkedList<Vector3> testPath = FindGroundPathToBaseFrom(spawnerLocation.position);
 
                     if (testPath != null) {
-                        if (TowerDefense.GameManager.instance.TryPay(currentlySelectedStructure.GetBuildingCost())) {
+                        if (gameManager.TryPay(currentlySelectedStructure.GetBuildingCost())) {
                             defaultPath = testPath;
                             OnMapChange.Invoke();
                             mapTiles[cellPosition.x, cellPosition.y].builtStructure = Instantiate(currentlySelectedStructure, cellCenterPosition + (new Vector3(0, 0, 1)), transform.rotation);
@@ -123,21 +103,63 @@ public class MapManager : MonoBehaviour, IInteractable {
                         mapTiles[cellPosition.x, cellPosition.y].tileType = MapTile.TileType.Walkable;
                         UIManager.instance.PrintToGameLog("Cannot block path to base!");
                     }
-
-
-                }
-                else {
-                    UnsetSelectedStuctureOnMap();
                 }
 
             }
             else {
-                SetSelectedStuctureOnMapTo(mapTiles[cellPosition.x, cellPosition.y].builtStructure);              
+                HighlightTile(mapTiles[cellPosition.x, cellPosition.y]);
             }
         }
-        else {            
+        else {
             UIManager.instance.PrintToGameLog("Can't build there!");
         }
+    }
+
+    public void SetSelectedStuctureTo(Structure structure) {
+        currentlySelectedStructure = structure;
+        UnhighlightTile();
+    }
+
+    public void HighlightTile(MapTile tile) {
+
+        if (highlightedTile == tile) {
+            UnhighlightTile();
+            return;
+        }
+
+        highlightedTile = tile;
+
+        Vector3 offset = new Vector3(0, -1.1f, 0);
+        structureContextMenu.position = tile.builtStructure.transform.position + offset;
+
+        structureContextMenu.gameObject.SetActive(true);
+    }
+
+    public void UnhighlightTile() {
+
+        highlightedTile = null;
+
+        structureContextMenu.gameObject.SetActive(false);
+
+    }
+
+    public void UpgradeHighlightedStructure() {
+
+        if (gameManager.TryPay(highlightedTile.builtStructure.GetUpgradeCost())) {
+            highlightedTile.builtStructure.Upgrade();
+        }
+        else {
+            UIManager.instance.PrintToGameLog("Not enough funds!");
+        }
+
+    }
+
+    public void SellHighlightedStructure() {
+
+        highlightedTile.builtStructure.Sell();
+        highlightedTile.builtStructure = null;
+        UnhighlightTile();
+
     }
 
     private void InitialiseGridInfo() {
@@ -203,17 +225,17 @@ public class MapManager : MonoBehaviour, IInteractable {
 
             foreach (MapTile neighbour in NodeNeighbours(currentNode)) {
 
-                if (neighbour.tileType!=MapTile.TileType.Walkable || closedSet.Contains(neighbour)) {
+                if (neighbour.tileType != MapTile.TileType.Walkable || closedSet.Contains(neighbour)) {
                     continue;
                 }
 
                 //kontrolowanie ruchu po skosie
                 Vector2Int movementDirection = neighbour.gridLocation - currentNode.gridLocation;
 
-                if (movementDirection.magnitude>1.0f) {
+                if (movementDirection.magnitude > 1.0f) {
 
                     int testedX, testedY;
-                    
+
                     if (movementDirection.x > 0) {
                         testedX = currentNode.gridLocation.x + 1;
                     }

@@ -7,6 +7,7 @@ public abstract class Structure : MonoBehaviour, IDamageable<float> {
 
     [Header("Inherited Parameters")]
     [SerializeField] protected float buildingCost;
+    [SerializeField] protected float upgradeCost;
     [SerializeField] protected float maxHealth = 100;
     protected float health;
 
@@ -18,15 +19,18 @@ public abstract class Structure : MonoBehaviour, IDamageable<float> {
         health = maxHealth;
     }
 
-    public void setup(float _health){
-        maxHealth = _health;
+    public void replenishHealth(){
         health = maxHealth;
     }
+
     public float GetBuildingCost() {
         return buildingCost;
     }
+    public float GetUpgradeCost() {
+        return upgradeCost;
+    }
 
-    public float getHealth(){
+    public float GetHealth(){
         return health;
     }
     public void TakeDamage(float dmg) {
@@ -61,6 +65,11 @@ public abstract class Structure : MonoBehaviour, IDamageable<float> {
     }
 
     public abstract void Upgrade();
+
+    public void Sell() {
+        TowerDefense.GameManager.instance.EarnMoney(buildingCost * 0.8f);
+        Die();
+    }
 
     public virtual void Die() {
         //W przyszłości kwestie graficzne umierania (animacje/eksplozje/particle etc.)

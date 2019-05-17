@@ -59,7 +59,7 @@ MonoBehaviour:
   enemyHealth: 100
   enemyReward: 25
   spawnIntervals: 0.5
-  enemiesTypes:
+  enemyTypes:
   - {fileID: 2881266602900286434, guid: 8c5fb80e1e3f28d4caecf2a729d0bb17, type: 3}
   spawnPoint: {fileID: 0}
   waveNumber: 1

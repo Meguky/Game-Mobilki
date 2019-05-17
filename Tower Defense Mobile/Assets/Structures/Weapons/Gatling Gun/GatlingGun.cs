@@ -12,15 +12,15 @@ public class GatlingGun : Weapon {
     [Header("Parameters")]
     [SerializeField] float rotationSpeed = 15.0f;
     [SerializeField] float attacksPerSecond = 3f;
+    private float attackingFrequency;
     [SerializeField] float attackDamage = 5f;
+    
 
     float currCooldown = 0;
 
     new void Start() {
 
-        buildingCost = 300;
-
-        attacksPerSecond = 1.0f / attacksPerSecond;
+        attackingFrequency = 1.0f / attacksPerSecond;
         availableEnemies = new List<Enemy>();
         weaponRange = GetComponent<CircleCollider2D>();
 
@@ -43,7 +43,7 @@ public class GatlingGun : Weapon {
 
         currCooldown += Time.deltaTime;
 
-        if (currCooldown>= attacksPerSecond) {
+        if (currCooldown >= attackingFrequency) {
 
             gunfireEffect.Play();
             Instantiate(gunshotEffect, trackedEnemy.transform.position, trackedEnemy.transform.rotation);
@@ -54,9 +54,15 @@ public class GatlingGun : Weapon {
     }
 
     //test
-    public override void Upgrade()
-    {
-        attackDamage += 5f;
+    public override void Upgrade() {
+
+        buildingCost += upgradeCost;
+        upgradeCost *= 2f;
+
+        attackDamage *= 1.1f;
+        attacksPerSecond *= 1.5f;
+        attackingFrequency = 1.0f / attacksPerSecond;
+
     }
 
     new void Update() {
