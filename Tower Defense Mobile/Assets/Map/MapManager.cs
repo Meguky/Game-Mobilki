@@ -177,6 +177,7 @@ public class MapManager : MonoBehaviour, IInteractable {
     }
 
     public void ReconstructMap() {
+
         for (int j = 0; j < 28; ++j) {
             for (int i = 0; i < 18; ++i) {
 
@@ -197,21 +198,22 @@ public class MapManager : MonoBehaviour, IInteractable {
                             loadedStructure = structures[2];
                             break;
                         default:
-                            loadedStructure = structures[0];
-                            break;
+                            continue;
                     }
 
                     mapTiles[i, j].builtStructure = Instantiate(loadedStructure, mapGrid.GetCellCenterWorld(new Vector3Int(i, j, 0)) + new Vector3(0,0,1), transform.rotation);
                     mapTiles[i, j].builtStructure.Upgrade(saveManager.state.tiles[i + j * 18].level);
                     mapTiles[i, j].tileType = MapTile.TileType.NonWalkable;
 
-                    defaultPath = FindGroundPathToBaseFrom(spawnerLocation.position);
-
                 }
 
             }
         }
+
+        defaultPath = FindGroundPathToBaseFrom(spawnerLocation.position);
+
     }
+
     public LinkedList<Vector3> FindGroundPathToBaseFrom(Vector3 startLoc) {
 
         Vector3Int startCellIndex = mapGrid.WorldToCell(startLoc);
