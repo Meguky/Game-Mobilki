@@ -2679,17 +2679,17 @@ PrefabInstance:
     - target: {fileID: 4528971880914679135, guid: 3e0de5e2c0903434888f9182fa9519e2,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 7.7170806
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4528971880914679135, guid: 3e0de5e2c0903434888f9182fa9519e2,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 10.32833
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4528971880914679135, guid: 3e0de5e2c0903434888f9182fa9519e2,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -40.628906
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4528971880914679135, guid: 3e0de5e2c0903434888f9182fa9519e2,
         type: 3}
@@ -2745,47 +2745,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Game Manager
       objectReference: {fileID: 0}
-    - target: {fileID: 7285926052646868180, guid: d3a5f554cab847a4d84d94f146bffacc,
-        type: 3}
-      propertyPath: playerBase
-      value: 
-      objectReference: {fileID: 1055745808}
-    - target: {fileID: 7285926052646868180, guid: d3a5f554cab847a4d84d94f146bffacc,
-        type: 3}
-      propertyPath: waveAnnouncer
-      value: 
-      objectReference: {fileID: 631854198}
-    - target: {fileID: 7285926052646868180, guid: d3a5f554cab847a4d84d94f146bffacc,
-        type: 3}
-      propertyPath: spawnPoint
-      value: 
-      objectReference: {fileID: 1080039470}
-    - target: {fileID: 7285926052646868180, guid: d3a5f554cab847a4d84d94f146bffacc,
-        type: 3}
-      propertyPath: playerBaseHealth
-      value: 150
-      objectReference: {fileID: 0}
-    - target: {fileID: 7285926052646868180, guid: d3a5f554cab847a4d84d94f146bffacc,
-        type: 3}
-      propertyPath: startWave
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7285926052646868180, guid: d3a5f554cab847a4d84d94f146bffacc,
-        type: 3}
-      propertyPath: saveManager
-      value: 
-      objectReference: {fileID: 4528971880914679134, guid: 3e0de5e2c0903434888f9182fa9519e2,
-        type: 3}
-    - target: {fileID: 7285926052646868180, guid: d3a5f554cab847a4d84d94f146bffacc,
-        type: 3}
-      propertyPath: mapManager
-      value: 
-      objectReference: {fileID: 1561022117}
-    - target: {fileID: 7285926052646868180, guid: d3a5f554cab847a4d84d94f146bffacc,
-        type: 3}
-      propertyPath: money
-      value: 1000
-      objectReference: {fileID: 0}
     - target: {fileID: 7285926052646868181, guid: d3a5f554cab847a4d84d94f146bffacc,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2840,6 +2799,47 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7285926052646868180, guid: d3a5f554cab847a4d84d94f146bffacc,
+        type: 3}
+      propertyPath: playerBase
+      value: 
+      objectReference: {fileID: 1055745808}
+    - target: {fileID: 7285926052646868180, guid: d3a5f554cab847a4d84d94f146bffacc,
+        type: 3}
+      propertyPath: waveAnnouncer
+      value: 
+      objectReference: {fileID: 631854198}
+    - target: {fileID: 7285926052646868180, guid: d3a5f554cab847a4d84d94f146bffacc,
+        type: 3}
+      propertyPath: spawnPoint
+      value: 
+      objectReference: {fileID: 1080039470}
+    - target: {fileID: 7285926052646868180, guid: d3a5f554cab847a4d84d94f146bffacc,
+        type: 3}
+      propertyPath: playerBaseHealth
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 7285926052646868180, guid: d3a5f554cab847a4d84d94f146bffacc,
+        type: 3}
+      propertyPath: startWave
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7285926052646868180, guid: d3a5f554cab847a4d84d94f146bffacc,
+        type: 3}
+      propertyPath: saveManager
+      value: 
+      objectReference: {fileID: 4528971880914679134, guid: 3e0de5e2c0903434888f9182fa9519e2,
+        type: 3}
+    - target: {fileID: 7285926052646868180, guid: d3a5f554cab847a4d84d94f146bffacc,
+        type: 3}
+      propertyPath: mapManager
+      value: 
+      objectReference: {fileID: 1561022117}
+    - target: {fileID: 7285926052646868180, guid: d3a5f554cab847a4d84d94f146bffacc,
+        type: 3}
+      propertyPath: money
+      value: 1000
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d3a5f554cab847a4d84d94f146bffacc, type: 3}
