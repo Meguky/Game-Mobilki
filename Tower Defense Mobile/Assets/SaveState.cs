@@ -23,8 +23,8 @@ public class SaveState
         for (int j = 0; j < 28; j++) {
             for (int i = 0; i < 18; i++) {
                 if(_mapTiles[i,j].builtStructure != null){
-                    tiles[i*18 + j].name = _mapTiles[i,j].builtStructure.getStructureName();
-                    tiles[i*18 + j].level = _mapTiles[i,j].builtStructure.getStructureLevel();
+                    tiles[i + j*18].name = _mapTiles[i,j].builtStructure.getStructureName();
+                    tiles[i + j*18].level = _mapTiles[i,j].builtStructure.getStructureLevel();
                 }
             }
         }

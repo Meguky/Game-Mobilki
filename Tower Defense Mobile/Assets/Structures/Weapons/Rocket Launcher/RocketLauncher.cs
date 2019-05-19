@@ -23,11 +23,6 @@ public class RocketLauncher : Weapon {
         availableEnemies = new List<Enemy>();
         weaponRange = GetComponent<CircleCollider2D>();
         structureName = "RocketLauncher";
-        if(structureLevel > 1){
-            for(int i = 0; i < structureLevel; i++){
-                Upgrade();
-            }
-        }
     }
 
     void RotateCannonTowardsEnemy() {
@@ -57,13 +52,13 @@ public class RocketLauncher : Weapon {
     }
 
     //trzeba to zrobić inaczej, ulepszenie jednej wyrzutni zwieksza damage rakiet z kazdej wyrzutni
-    public override void Upgrade() {
-
-        buildingCost += upgradeCost;
-        upgradeCost *= 2f;
-
-        rocketDamage *= 2f;
-
+    public override void Upgrade(int levels) {
+        for(int i = 0; i < levels; i++){
+            buildingCost += upgradeCost;
+            upgradeCost *= 2f;
+            rocketDamage *= 2f;
+            structureLevel++;
+        }
     }
 
     new void Update() {

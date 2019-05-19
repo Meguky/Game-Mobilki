@@ -6,6 +6,7 @@ public class Wall : Structure {
     // Start is called before the first frame update
     void Start() {
         buildingCost = 50.0f;
+        structureName = "Wall";
     }
 
     // Update is called once per frame
@@ -13,7 +14,7 @@ public class Wall : Structure {
 
     }
 
-    public override void Upgrade()
+    public override void Upgrade(int levels)
     {
         return;
     }

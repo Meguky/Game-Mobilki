@@ -8,7 +8,7 @@ public class Base : Structure {
         initializeValues(100,1);
     }
 
-    public override void Upgrade() {
+    public override void Upgrade(int levels) {
         return;
     }
 

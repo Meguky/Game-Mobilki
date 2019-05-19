@@ -14,6 +14,9 @@ namespace TowerDefense {
         private Enemy enemyInstance;
         private GameObject[] remainingEnemiesGameObjects;
 
+        [Header("Save essentials")]
+        [SerializeField] private SaveManager saveManager;
+
         [Header("Player parameters")]
         [SerializeField] private Structure playerBase;
         [SerializeField] private float playerBaseHealth = 100;
@@ -58,6 +61,11 @@ namespace TowerDefense {
             endWaveTime = new WaitForSeconds(endDelay);
             playerBase.initializeValues(playerBaseHealth,1);
             //Symulacja waveów
+            if(saveManager.saveLoaded){
+                startWave = saveManager.state.waveNumber;
+                money = saveManager.state.money;
+            }
+
             if(startWave > 1){
                 for(int i = 0 ; i < startWave;i++){
 
@@ -243,5 +251,13 @@ namespace TowerDefense {
                 }
             }
         }
+
+        void OnApplicationQuit()
+        {    
+            saveManager.state.money = money;
+            saveManager.state.waveNumber = waveNumber;
+            saveManager.Save();
+        }
+
     }
 }

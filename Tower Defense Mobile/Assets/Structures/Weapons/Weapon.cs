@@ -60,7 +60,7 @@ public abstract class Weapon : Structure {
         }
     }
 
-    public override void Upgrade() { }
+    public override void Upgrade(int levels) { }
 
     protected void OnTriggerExit2D(Collider2D other) {
         if (other.tag.Equals("Enemy")) {

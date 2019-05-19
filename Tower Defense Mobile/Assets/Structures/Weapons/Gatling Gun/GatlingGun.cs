@@ -24,11 +24,6 @@ public class GatlingGun : Weapon {
         availableEnemies = new List<Enemy>();
         weaponRange = GetComponent<CircleCollider2D>();
         structureName = "GatlingGun";
-        if(structureLevel > 1){
-            for(int i = 0; i < structureLevel; i++){
-                Upgrade();
-            }
-        }
     }
 
     void RotateCannonTowardsEnemy() {
@@ -59,15 +54,17 @@ public class GatlingGun : Weapon {
     }
 
     //test
-    public override void Upgrade() {
+    public override void Upgrade(int levels) {
+        for (int i = 0; i < levels; i++)
+        {
+            buildingCost += upgradeCost;
+            upgradeCost *= 2f;
 
-        buildingCost += upgradeCost;
-        upgradeCost *= 2f;
-
-        attackDamage *= 1.1f;
-        attacksPerSecond *= 1.5f;
-        attackingFrequency = 1.0f / attacksPerSecond;
-
+            attackDamage *= 1.1f;
+            attacksPerSecond *= 1.5f;
+            attackingFrequency = 1.0f / attacksPerSecond;
+            structureLevel++;
+        }
     }
 
     new void Update() {

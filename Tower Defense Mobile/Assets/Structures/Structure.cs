@@ -8,7 +8,7 @@ public abstract class Structure : MonoBehaviour, IDamageable<float> {
     [Header("Inherited Parameters")]
     protected string structureName;  
     [SerializeField] protected float buildingCost;
-    protected int structureLevel;
+    protected int structureLevel = 0;
     [SerializeField] protected float upgradeCost;
     [SerializeField] protected float maxHealth;
     protected float health;
@@ -74,7 +74,7 @@ public abstract class Structure : MonoBehaviour, IDamageable<float> {
 
     }
 
-    public abstract void Upgrade();
+    public abstract void Upgrade(int levels);
 
     public void Sell() {
         TowerDefense.GameManager.instance.EarnMoney(buildingCost * 0.8f);
