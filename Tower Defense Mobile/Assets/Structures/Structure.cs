@@ -45,18 +45,18 @@ public abstract class Structure : MonoBehaviour, IDamageable<float> {
     }
     public void TakeDamage(float dmg) {
         health -= dmg;
-        StartCoroutine(FluentlyUpdateHealthbar());
+        StartCoroutine(UpdateHealthbar());
         if (health <= 0) {
             Die();
         }
     }
-    public IEnumerator FluentlyUpdateHealthbar() {
+    public IEnumerator UpdateHealthbar() {
 
         if (!healthBar.activeInHierarchy) {
             healthBar.SetActive(true);
         }
 
-        healthValue.text = health.ToString();
+        healthValue.text = Mathf.Round(health).ToString();
 
         float elapsedTime = 0;
         float healthbarScalingTime = 0.1f;

@@ -37,7 +37,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable<float> {
             healthBar.SetActive(true);
         }
 
-        healthValue.text = health.ToString();
+        healthValue.text = Mathf.Round(health).ToString();
 
         float elapsedTime = 0;
         float healthbarScalingTime = 0.1f;
