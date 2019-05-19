@@ -16,6 +16,8 @@ namespace TowerDefense {
 
         [Header("Save essentials")]
         [SerializeField] private SaveManager saveManager;
+        [HideInInspector] public bool saveLoaded = false;
+
 
         [Header("Player parameters")]
         [SerializeField] private Structure playerBase;
@@ -65,9 +67,9 @@ namespace TowerDefense {
             //Symulacja waveów
 
             if (saveManager.Load()) {
+                saveLoaded = true;
                 startWave = saveManager.state.waveNumber;
                 money = saveManager.state.money;
-                Debug.Log(money);
             }
 
             if (startWave > 1) {

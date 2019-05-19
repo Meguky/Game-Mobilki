@@ -6,7 +6,6 @@ public class SaveManager : MonoBehaviour {
 
     public static SaveManager Instance { set; get; }
     public SaveState state = new SaveState();
-    public bool saveLoaded = false;
 
     private void Start() {
 
@@ -19,7 +18,11 @@ public class SaveManager : MonoBehaviour {
         }
 
     }
-    
+
+    public SaveState GetSavedState() {
+        return state;
+    }
+
     //save zapisany do player pref
     public void Save() {
 
@@ -35,13 +38,11 @@ public class SaveManager : MonoBehaviour {
 
             state = SaveSerializer.Deserialize<SaveState>(PlayerPrefs.GetString("save"));
             Debug.Log("Loaded save: " + PlayerPrefs.GetString("save"));
-            saveLoaded = true;
             return true;
 
         }
         else {
             state = new SaveState();
-            saveLoaded = false;
             return false;
         }
     }

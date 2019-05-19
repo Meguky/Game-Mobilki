@@ -44,10 +44,13 @@ public class MapManager : MonoBehaviour, IInteractable {
 
         mapGrid = GetComponent<Grid>();
         gameManager = TowerDefense.GameManager.instance;
+
         InitialiseGridInfo();
-        if (saveManager.saveLoaded) {
+
+        if (gameManager.saveLoaded) {
             ReconstructMap();
         }
+
         defaultPath = FindGroundPathToBaseFrom(spawnerLocation.position);
 
     }
@@ -71,10 +74,13 @@ public class MapManager : MonoBehaviour, IInteractable {
                     LinkedList<Vector3> testPath = FindGroundPathToBaseFrom(spawnerLocation.position);
 
                     if (testPath != null) {
+
                         if (gameManager.TryPay(currentlySelectedStructure.GetBuildingCost())) {
+
                             defaultPath = testPath;
                             OnMapChange.Invoke();
-                            mapTiles[cellPosition.x, cellPosition.y].builtStructure = Instantiate(currentlySelectedStructure, cellCenterPosition + (new Vector3(0, 0, 1)), transform.rotation);
+                            mapTiles[cellPosition.x, cellPosition.y].builtStructure = Instantiate(currentlySelectedStructure, cellCenterPosition + new Vector3(0,0,1), transform.rotation);
+
                         }
                         else {
                             UIManager.instance.PrintToGameLog("Not enough funds!");
@@ -127,7 +133,7 @@ public class MapManager : MonoBehaviour, IInteractable {
     public void UpgradeHighlightedStructure() {
 
         if (gameManager.TryPay(highlightedTile.builtStructure.GetUpgradeCost())) {
-            highlightedTile.builtStructure.Upgrade(1);
+            highlightedTile.builtStructure.Upgrade();
         }
         else {
             UIManager.instance.PrintToGameLog("Not enough funds!");
@@ -171,26 +177,38 @@ public class MapManager : MonoBehaviour, IInteractable {
     }
 
     public void ReconstructMap() {
-        Debug.Log("Reconstructing map");
         for (int j = 0; j < 28; ++j) {
             for (int i = 0; i < 18; ++i) {
+
                 if (saveManager.state.tiles[i + j * 18].name != "") {
+
                     string structureName = saveManager.state.tiles[i + j * 18].name;
-                    Structure structure;
+                    Structure loadedStructure;
                     Debug.Log(structureName + " on " + i + ", " + j);
-                    if (structureName == "Wall") {
-                        structure = Instantiate(structures[0], new Vector3(i - 9, j - 5, 1), Quaternion.identity);
-                        structure.Upgrade(saveManager.state.tiles[i + j * 18].level);
+
+                    switch (structureName) {
+                        case "Wall":
+                            loadedStructure = structures[0];
+                            break;
+                        case "RocketLauncher":
+                            loadedStructure = structures[1];
+                            break;
+                        case "GatlingGun":
+                            loadedStructure = structures[2];
+                            break;
+                        default:
+                            loadedStructure = structures[0];
+                            break;
                     }
-                    else if (structureName == "RocketLauncher") {
-                        structure = Instantiate(structures[1], new Vector3(i - 9, j - 5, 1), Quaternion.identity);
-                        structure.Upgrade(saveManager.state.tiles[i + j * 18].level);
-                    }
-                    else if (structureName == "GatlingGun") {
-                        structure = Instantiate(structures[2], new Vector3(i - 9, j - 5, 1), Quaternion.identity);
-                        structure.Upgrade(saveManager.state.tiles[i + j * 18].level);
-                    }
+
+                    mapTiles[i, j].builtStructure = Instantiate(loadedStructure, mapGrid.GetCellCenterWorld(new Vector3Int(i, j, 0)) + new Vector3(0,0,1), transform.rotation);
+                    mapTiles[i, j].builtStructure.Upgrade(saveManager.state.tiles[i + j * 18].level);
+                    mapTiles[i, j].tileType = MapTile.TileType.NonWalkable;
+
+                    defaultPath = FindGroundPathToBaseFrom(spawnerLocation.position);
+
                 }
+
             }
         }
     }

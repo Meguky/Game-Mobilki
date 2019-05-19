@@ -74,7 +74,7 @@ public abstract class Structure : MonoBehaviour, IDamageable<float> {
 
     }
 
-    public abstract void Upgrade(int levels);
+    public abstract void Upgrade(int levels=1);
 
     public void Sell() {
         TowerDefense.GameManager.instance.EarnMoney(buildingCost * 0.8f);
