@@ -7,14 +7,19 @@ using UnityEngine.Tilemaps;
 public class MapManager : MonoBehaviour, IInteractable {
 
     public static MapManager instance;
+
     private TowerDefense.GameManager gameManager;
+
     private Grid mapGrid;
     private MapTile[,] mapTiles = new MapTile[18, 28];
     private Structure currentlySelectedStructure;
     private MapTile highlightedTile;
+    [SerializeField] private Transform structureContextMenu;
+
     [Header("Save essentials")]
     [SerializeField] private SaveManager saveManager;
     [SerializeField] private Structure[] structures;
+
     [Header("Pathfinding")]
     [SerializeField] Transform spawnerLocation;
     [SerializeField] Transform baseLocation;
@@ -25,7 +30,6 @@ public class MapManager : MonoBehaviour, IInteractable {
 
     public LinkedList<Vector3> defaultPath = new LinkedList<Vector3>();
 
-    [SerializeField] private Transform structureContextMenu;
 
     // Start is called before the first frame update
     void Start() {
@@ -41,7 +45,7 @@ public class MapManager : MonoBehaviour, IInteractable {
         mapGrid = GetComponent<Grid>();
         gameManager = TowerDefense.GameManager.instance;
         InitialiseGridInfo();
-        if(saveManager.saveLoaded){
+        if (saveManager.saveLoaded) {
             ReconstructMap();
         }
         defaultPath = FindGroundPathToBaseFrom(spawnerLocation.position);
@@ -166,23 +170,25 @@ public class MapManager : MonoBehaviour, IInteractable {
         }
     }
 
-    public void ReconstructMap(){
+    public void ReconstructMap() {
         Debug.Log("Reconstructing map");
         for (int j = 0; j < 28; ++j) {
             for (int i = 0; i < 18; ++i) {
-                if(saveManager.state.tiles[i+ j*18].name != ""){
-                    string structureName = saveManager.state.tiles[i + j*18].name;
+                if (saveManager.state.tiles[i + j * 18].name != "") {
+                    string structureName = saveManager.state.tiles[i + j * 18].name;
                     Structure structure;
                     Debug.Log(structureName + " on " + i + ", " + j);
-                    if(structureName == "Wall"){
-                        structure = Instantiate(structures[0],new Vector3(i-9,j-5,1),Quaternion.identity);
-                        structure.Upgrade(saveManager.state.tiles[i + j*18].level);
-                    }else if(structureName == "RocketLauncher"){
-                        structure = Instantiate(structures[1],new Vector3(i-9,j-5,1),Quaternion.identity);
-                        structure.Upgrade(saveManager.state.tiles[i + j*18].level);
-                    }else if(structureName == "GatlingGun"){
-                        structure = Instantiate(structures[2],new Vector3(i-9,j-5,1),Quaternion.identity);
-                        structure.Upgrade(saveManager.state.tiles[i + j*18].level);
+                    if (structureName == "Wall") {
+                        structure = Instantiate(structures[0], new Vector3(i - 9, j - 5, 1), Quaternion.identity);
+                        structure.Upgrade(saveManager.state.tiles[i + j * 18].level);
+                    }
+                    else if (structureName == "RocketLauncher") {
+                        structure = Instantiate(structures[1], new Vector3(i - 9, j - 5, 1), Quaternion.identity);
+                        structure.Upgrade(saveManager.state.tiles[i + j * 18].level);
+                    }
+                    else if (structureName == "GatlingGun") {
+                        structure = Instantiate(structures[2], new Vector3(i - 9, j - 5, 1), Quaternion.identity);
+                        structure.Upgrade(saveManager.state.tiles[i + j * 18].level);
                     }
                 }
             }
@@ -326,8 +332,7 @@ public class MapManager : MonoBehaviour, IInteractable {
     /// <summary>
     /// Callback sent to all game objects before the application is quit.
     /// </summary>
-    void OnApplicationQuit()
-    {
+    void OnApplicationQuit() {
         saveManager.state.setMapTiles(mapTiles);
         saveManager.Save();
     }

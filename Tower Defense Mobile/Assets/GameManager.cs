@@ -41,7 +41,7 @@ namespace TowerDefense {
         [SerializeField] private float spawnIntervals = 0.5f;
         [SerializeField] private Enemy[] enemyTypes;
         [SerializeField] private Transform spawnPoint;
-        
+
         [HideInInspector] public int waveNumber = 1;
         [HideInInspector] public int enemiesCount = 0;
 
@@ -59,27 +59,31 @@ namespace TowerDefense {
 
             startWaveTime = new WaitForSeconds(startDelay);
             endWaveTime = new WaitForSeconds(endDelay);
-            playerBase.initializeValues(playerBaseHealth,1);
+            playerBase.initializeValues(playerBaseHealth, 1);
+
+
             //Symulacja waveów
-            if(saveManager.saveLoaded){
+
+            if (saveManager.Load()) {
                 startWave = saveManager.state.waveNumber;
                 money = saveManager.state.money;
+                Debug.Log(money);
             }
 
-            if(startWave > 1){
-                for(int i = 0 ; i < startWave;i++){
+            if (startWave > 1) {
+                for (int i = 0; i < startWave; i++) {
 
                     enemiesInWave += Mathf.RoundToInt(i * monsterDensityMultiplier / 40);
                     enemyHealth += i * monsterHealthMultiplier;
                     enemyDamage += i * monsterDamageMultiplier;
                     enemyReward += i * monsterRewardMultiplier;
 
-                }   
+                }
                 waveNumber = startWave;
             }
         }
 
-        public void Setup(){
+        public void Setup() {
             StartCoroutine(GameLoop());
         }
 
@@ -99,7 +103,7 @@ namespace TowerDefense {
             }
         }
 
-        private IEnumerator GameLoop(){
+        private IEnumerator GameLoop() {
 
             yield return StartCoroutine(StartWave());
 
@@ -112,18 +116,18 @@ namespace TowerDefense {
             StartCoroutine(GameLoop());
 
         }
-        
-        private IEnumerator StartWave(){
+
+        private IEnumerator StartWave() {
             waveAnnouncer.text = "Wave " + waveNumber + " approaching!";
             yield return startWaveTime;
         }
 
-        private IEnumerator GenerateWave(){
+        private IEnumerator GenerateWave() {
 
             enemiesCount += enemiesInWave;
             waveAnnouncer.text = "Enemies left in wave: " + enemiesCount;
 
-            for (int i = 0; i < enemiesInWave; i++){
+            for (int i = 0; i < enemiesInWave; i++) {
 
                 enemyInstance = Instantiate(enemyTypes[0], spawnPoint.position, spawnPoint.rotation);
                 enemyInstance.OnDeath.AddListener(OnEnemyDeath);
@@ -131,27 +135,27 @@ namespace TowerDefense {
 
                 yield return new WaitForSeconds(spawnIntervals);
 
-                if (playerBase.GetHealth() < 0){
+                if (playerBase.GetHealth() < 0) {
                     break;
                 }
             }
         }
 
-        private IEnumerator PlayWave(){
-            while(enemiesCount > 0 && playerBase.GetHealth() > 0){
+        private IEnumerator PlayWave() {
+            while (enemiesCount > 0 && playerBase.GetHealth() > 0) {
                 waveAnnouncer.text = "Enemies left in wave: " + enemiesCount;
                 yield return null;
             }
         }
 
-        private IEnumerator EndWave(){
+        private IEnumerator EndWave() {
 
-            if (playerBase.GetHealth() <= 0){
+            if (playerBase.GetHealth() <= 0) {
 
                 waveAnnouncer.text = "Wave failed, retring current wave!";
                 remainingEnemiesGameObjects = GameObject.FindGameObjectsWithTag("Enemy");
 
-                for (int i = 0; i < remainingEnemiesGameObjects.Length; i++){
+                for (int i = 0; i < remainingEnemiesGameObjects.Length; i++) {
                     Destroy(remainingEnemiesGameObjects[i]);
                 }
 
@@ -174,7 +178,7 @@ namespace TowerDefense {
 
         }
 
-        private void OnEnemyDeath(Enemy enemy){
+        private void OnEnemyDeath(Enemy enemy) {
             enemiesCount--;
         }
 
@@ -183,7 +187,7 @@ namespace TowerDefense {
         }
 
         //Zmienne na rzecz obsługi dotyku
-        Vector2 touchStartPosition, touchPreviousPosition ,touchCurrentPosition;
+        Vector2 touchStartPosition, touchPreviousPosition, touchCurrentPosition;
 
         private bool IsPointerOverUIObject() {
             PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
@@ -207,7 +211,7 @@ namespace TowerDefense {
                         touchCurrentPosition = Input.GetTouch(0).position;
                         cameraManager.MoveCameraBy(touchPreviousPosition - touchCurrentPosition);
                     }
-                    if (Input.GetTouch(0).phase == TouchPhase.Ended && (touchStartPosition-touchCurrentPosition).magnitude<5.0f) {
+                    if (Input.GetTouch(0).phase == TouchPhase.Ended && (touchStartPosition - touchCurrentPosition).magnitude < 5.0f) {
 
                         Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
                         Vector2 touchPos = new Vector2(worldPos.x, worldPos.y);
@@ -252,8 +256,7 @@ namespace TowerDefense {
             }
         }
 
-        void OnApplicationQuit()
-        {    
+        void OnApplicationQuit() {
             saveManager.state.money = money;
             saveManager.state.waveNumber = waveNumber;
             saveManager.Save();
