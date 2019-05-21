@@ -148,9 +148,12 @@ public class MapManager : MonoBehaviour, IInteractable {
         highlightedTile.builtStructure.Sell();
 
         highlightedTile.builtStructure = null;
-        highlightedTile.tileType = MapTile.TileType.Walkable;
 
-        saveManager.state.SetMapTiles(mapTiles);
+        // thereWasAnAttempt.png
+        //
+        //mapTiles[highlightedTile.gridLocation.x, highlightedTile.gridLocation.y].builtStructure = null;
+        //saveManager.state.SetMapTiles(mapTiles);
+        //saveManager.Save();
 
         UnhighlightTile();
 
@@ -355,10 +358,13 @@ public class MapManager : MonoBehaviour, IInteractable {
         return localPath;
 
     }
-    /// <summary>
-    /// Callback sent to all game objects before the application is quit.
-    /// </summary>
+
     void OnApplicationPause() {
+        saveManager.state.SetMapTiles(mapTiles);
+        saveManager.Save();
+    }
+
+    void OnApplicationQuit() {
         saveManager.state.SetMapTiles(mapTiles);
         saveManager.Save();
     }

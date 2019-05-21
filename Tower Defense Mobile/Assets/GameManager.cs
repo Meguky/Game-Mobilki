@@ -339,5 +339,11 @@ namespace EndlessBitDefense {
             saveManager.Save();
         }
 
+        void OnApplicationQuit() {
+            saveManager.state.money = money;
+            saveManager.state.waveNumber = waveNumber;
+            saveManager.Save();
+        }
+
     }
 }
