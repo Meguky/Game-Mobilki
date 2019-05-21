@@ -95,6 +95,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buildingCost: 0
+  upgradeCost: 0
+  levelIndicator: {fileID: 0}
   maxHealth: 1000
   healthBar: {fileID: 2132484632937655571}
   healthBarFilling: {fileID: 2132484634111451053}
@@ -132,6 +134,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3600109249756690406}
     m_Modifications:
+    - target: {fileID: 5174061468273819288, guid: 795885e109a8f9b4b92e8d248f6edf9e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8185430866401052757, guid: 795885e109a8f9b4b92e8d248f6edf9e,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.75
+      objectReference: {fileID: 0}
     - target: {fileID: 8126619979034722941, guid: 795885e109a8f9b4b92e8d248f6edf9e,
         type: 3}
       propertyPath: m_Name
@@ -247,14 +259,14 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 8185430866401052757, guid: 795885e109a8f9b4b92e8d248f6edf9e,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 5174061468273819288, guid: 795885e109a8f9b4b92e8d248f6edf9e,
+    - target: {fileID: 3226616504976366196, guid: 795885e109a8f9b4b92e8d248f6edf9e,
         type: 3}
       propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5088691319617353889, guid: 795885e109a8f9b4b92e8d248f6edf9e,
+        type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

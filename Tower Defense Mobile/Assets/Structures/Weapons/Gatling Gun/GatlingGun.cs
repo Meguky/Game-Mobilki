@@ -14,7 +14,7 @@ public class GatlingGun : Weapon {
     [SerializeField] float attacksPerSecond = 3f;
     private float attackingFrequency;
     [SerializeField] float attackDamage = 5f;
-    
+
 
     float currCooldown = 0;
 
@@ -55,8 +55,9 @@ public class GatlingGun : Weapon {
 
     //test
     public override void Upgrade(int levels) {
-        for (int i = 0; i < levels; i++)
-        {
+
+        for (int i = 0; i < levels; i++) {
+
             buildingCost += upgradeCost;
             upgradeCost *= 2f;
 
@@ -64,7 +65,11 @@ public class GatlingGun : Weapon {
             attacksPerSecond *= 1.5f;
             attackingFrequency = 1.0f / attacksPerSecond;
             structureLevel++;
+
         }
+
+        UpdateLevelIndicator();
+
     }
 
     new void Update() {

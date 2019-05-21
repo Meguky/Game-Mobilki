@@ -32,8 +32,6 @@ public class SaveManager : MonoBehaviour {
 
     public bool Load() {
 
-        //PlayerPrefs.DeleteAll(); // ODKOMENTOWAĆ JEŻELI CHCESZ ODPALAĆ BEZ WCZYTANIA ZAPISU
-
         if (PlayerPrefs.HasKey("save")) {
 
             state = SaveSerializer.Deserialize<SaveState>(PlayerPrefs.GetString("save"));
@@ -46,4 +44,9 @@ public class SaveManager : MonoBehaviour {
             return false;
         }
     }
+
+    public void DeleteSaveData() {
+        PlayerPrefs.DeleteAll();
+    }
+
 }

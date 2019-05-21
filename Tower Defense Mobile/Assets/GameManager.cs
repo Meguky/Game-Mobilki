@@ -8,34 +8,41 @@ namespace TowerDefense {
     public class GameManager : MonoBehaviour {
 
         public static GameManager instance;
-        private CameraManager cameraManager;
-        private WaitForSeconds startWaveTime;
-        private WaitForSeconds endWaveTime;
-        private Enemy enemyInstance;
-        private GameObject[] remainingEnemiesGameObjects;
 
+        private CameraManager cameraManager;
+        
         [Header("Save essentials")]
-        [SerializeField] private SaveManager saveManager;
+        private SaveManager saveManager;
         [HideInInspector] public bool saveLoaded = false;
 
+        [Header("Required References")]
+        [SerializeField] private Base playerBase;
+        [SerializeField] private Text waveAnnouncer;
+        [SerializeField] private UIManager uiManager;
 
         [Header("Player parameters")]
-        [SerializeField] private Structure playerBase;
-        [SerializeField] private float playerBaseHealth = 100;
-        public float money;
-        [SerializeField] private Text waveAnnouncer;
+        [SerializeField] private float money;
 
         [Header("Wave parameters")]
         [SerializeField] private int startWave = 1;
         [SerializeField] private float startDelay = 3f;
         [SerializeField] private float endDelay = 3f;
 
+        [HideInInspector] public int waveNumber = 1;
+        [HideInInspector] public int enemiesCount = 0;
+
         [SerializeField] private float monsterHealthMultiplier = 3f;
         [SerializeField] private float monsterDamageMultiplier = 5f;
         [SerializeField] private float monsterDensityMultiplier = 1f;
         [SerializeField] private float monsterRewardMultiplier = 1f;
 
-        [Header("Enemies parameters")]
+        private bool breakWave = false;
+        private bool goBackInWaves = false;
+        private WaitForSeconds endWaveTime;
+        private Enemy enemyInstance;
+        private GameObject[] remainingEnemiesGameObjects;
+
+        [Header("Enemy parameters")]
         [SerializeField] private int enemiesInWave = 5;
         [SerializeField] private float enemyDamage = 10;
         [SerializeField] private float enemyHealth = 100;
@@ -44,8 +51,9 @@ namespace TowerDefense {
         [SerializeField] private Enemy[] enemyTypes;
         [SerializeField] private Transform spawnPoint;
 
-        [HideInInspector] public int waveNumber = 1;
-        [HideInInspector] public int enemiesCount = 0;
+        public float GetMoney() {
+            return money;
+        }
 
         void Start() {
 
@@ -58,31 +66,25 @@ namespace TowerDefense {
             }
 
             cameraManager = Camera.main.GetComponent<CameraManager>();
+            saveManager = SaveManager.Instance;
 
-            startWaveTime = new WaitForSeconds(startDelay);
             endWaveTime = new WaitForSeconds(endDelay);
-            playerBase.initializeValues(playerBaseHealth, 1);
-
 
             //Symulacja waveów
-
             if (saveManager.Load()) {
+
                 saveLoaded = true;
-                startWave = saveManager.state.waveNumber;
                 money = saveManager.state.money;
-            }
+                startWave = saveManager.state.waveNumber;
 
-            if (startWave > 1) {
-                for (int i = 0; i < startWave; i++) {
-
-                    enemiesInWave += Mathf.RoundToInt(i * monsterDensityMultiplier / 40);
-                    enemyHealth += i * monsterHealthMultiplier;
-                    enemyDamage += i * monsterDamageMultiplier;
-                    enemyReward += i * monsterRewardMultiplier;
-
+                if (startWave > 1) {
+                    for (int i = 0; i < startWave; i++) {
+                        NextWave();
+                    }
                 }
-                waveNumber = startWave;
+
             }
+
         }
 
         public void Setup() {
@@ -91,18 +93,20 @@ namespace TowerDefense {
 
         public void EarnMoney(float amount) {
             money += amount;
-            UIManager.instance.UpdateMoney();
+            uiManager.UpdateMoney();
         }
 
         public bool TryPay(float amount) {
+
             if (amount <= money) {
                 money -= amount;
-                UIManager.instance.UpdateMoney();
+                uiManager.UpdateMoney();
                 return true;
             }
             else {
                 return false;
             }
+
         }
 
         private IEnumerator GameLoop() {
@@ -120,8 +124,16 @@ namespace TowerDefense {
         }
 
         private IEnumerator StartWave() {
+
             waveAnnouncer.text = "Wave " + waveNumber + " approaching!";
-            yield return startWaveTime;
+
+            float counter = 0.0f;
+
+            while (counter<startDelay && !breakWave) {
+                yield return new WaitForEndOfFrame();
+                counter += Time.deltaTime;
+            }
+
         }
 
         private IEnumerator GenerateWave() {
@@ -137,51 +149,113 @@ namespace TowerDefense {
 
                 yield return new WaitForSeconds(spawnIntervals);
 
-                if (playerBase.GetHealth() < 0) {
+                if (breakWave) {
                     break;
                 }
+
             }
         }
 
         private IEnumerator PlayWave() {
-            while (enemiesCount > 0 && playerBase.GetHealth() > 0) {
-                waveAnnouncer.text = "Enemies left in wave: " + enemiesCount;
+            while (!breakWave) {
                 yield return null;
             }
         }
 
         private IEnumerator EndWave() {
 
-            if (playerBase.GetHealth() <= 0) {
+            breakWave = false;
+
+            if (goBackInWaves) {
+
+                goBackInWaves = false;
+
+                waveAnnouncer.text = "Reverting to previous stage!";
+
+                CleanupStage();
+                PreviousWave();
+
+            }
+            else if (playerBase.GetHealth() <= 0) {
 
                 waveAnnouncer.text = "Wave failed, retring current wave!";
-                remainingEnemiesGameObjects = GameObject.FindGameObjectsWithTag("Enemy");
 
-                for (int i = 0; i < remainingEnemiesGameObjects.Length; i++) {
-                    Destroy(remainingEnemiesGameObjects[i]);
-                }
-
-                playerBase.gameObject.SetActive(true);
-                playerBase.replenishHealth();
-                enemiesCount = 0;
+                CleanupStage();
 
             }
             else {
 
-                waveNumber++;
                 waveAnnouncer.text = "Wave beaten, next wave is approaching!";
-                enemyHealth += waveNumber * monsterHealthMultiplier;
-                enemyDamage += waveNumber * monsterDamageMultiplier;
-                enemiesInWave += Mathf.RoundToInt(monsterDensityMultiplier * waveNumber / 5.0f);
-                enemyReward += waveNumber * monsterRewardMultiplier;
+
+                NextWave();
 
             }
+
             yield return endWaveTime;
 
         }
 
+        private void CleanupStage() {
+
+            remainingEnemiesGameObjects = GameObject.FindGameObjectsWithTag("Enemy");
+
+            for (int i = 0; i < remainingEnemiesGameObjects.Length; i++) {
+                Destroy(remainingEnemiesGameObjects[i]);
+            }
+            enemiesCount = 0;
+
+            playerBase.ReplenishHealth();
+
+        }
+
+        public void RevertWave() {
+
+            if (waveNumber > 1) {
+                breakWave = true;
+                goBackInWaves = true;
+            }
+            else {
+                uiManager.PrintToGameLog("You are already on stage 1!");
+            }
+
+        }
+
+        private void NextWave() {
+
+            waveNumber++;
+
+            enemiesInWave += Mathf.RoundToInt(monsterDensityMultiplier * waveNumber / 5.0f);
+            enemyHealth += waveNumber * monsterHealthMultiplier;
+            enemyDamage += waveNumber * monsterDamageMultiplier;
+            enemyReward += waveNumber * monsterRewardMultiplier;
+
+        }
+
+        private void PreviousWave() {
+
+            enemiesInWave -= Mathf.RoundToInt(monsterDensityMultiplier * waveNumber / 5.0f);
+            enemyHealth -= waveNumber * monsterHealthMultiplier;
+            enemyDamage -= waveNumber * monsterDamageMultiplier;
+            enemyReward -= waveNumber * monsterRewardMultiplier;
+
+            waveNumber--;
+
+        }
+
         private void OnEnemyDeath(Enemy enemy) {
+
             enemiesCount--;
+
+            if (enemiesCount==0) {
+                breakWave = true;
+            }
+
+            waveAnnouncer.text = "Enemies left in wave: " + enemiesCount;
+
+        }
+
+        public void OnBaseDestroyed() {
+            breakWave = true;
         }
 
         private void Update() {

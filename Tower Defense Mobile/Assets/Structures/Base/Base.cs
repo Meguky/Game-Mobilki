@@ -5,12 +5,14 @@ using UnityEngine;
 public class Base : Structure {
 
     private void Start() {
-        initializeValues(100,1);
+        health = maxHealth;
     }
 
     public override void Upgrade(int levels) {
         return;
     }
 
-
+    public override void Die() {
+        TowerDefense.GameManager.instance.OnBaseDestroyed();
+    }
 }

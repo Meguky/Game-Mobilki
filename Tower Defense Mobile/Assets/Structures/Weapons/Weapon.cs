@@ -32,7 +32,7 @@ public abstract class Weapon : Structure {
 
     protected void Start() {
 
-        initializeValues(100f,1);
+        health = maxHealth;
 
         availableEnemies = new List<Enemy>();
         weaponRange = GetComponent<CircleCollider2D>();

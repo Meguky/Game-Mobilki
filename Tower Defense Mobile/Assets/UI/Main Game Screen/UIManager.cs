@@ -13,16 +13,22 @@ public class UIManager : MonoBehaviour {
     [SerializeField] private RectTransform bottomLeftPanel;
     [SerializeField] private RectTransform hidePanelButton;
 
+    private TowerDefense.GameManager gameManager;
+
     private bool bottomPanelShown = true;
 
     // Start is called before the first frame update
     void Start() {
+
         if (instance == null) {
             instance = this;
         }
         else {
             Destroy(gameObject);
         }
+
+        gameManager = TowerDefense.GameManager.instance;
+
         UpdateMoney();
     }
 
@@ -103,7 +109,7 @@ public class UIManager : MonoBehaviour {
     }
 
     public void UpdateMoney() {
-        moneyTextbox.text = "Funds: " + Mathf.Round(TowerDefense.GameManager.instance.money) + "$";
+        moneyTextbox.text = "Funds: " + Mathf.Round(gameManager.GetMoney()) + "$";
     }
 
 }

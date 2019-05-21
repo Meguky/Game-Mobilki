@@ -48,8 +48,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82936a34be18e8846b4dea2f2ec4878b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  structureName: Gatling Gun
   buildingCost: 200
   upgradeCost: 100
+  levelIndicator: {fileID: 8437585628889902876}
   maxHealth: 100
   healthBar: {fileID: 7445304212145230993}
   healthBarFilling: {fileID: 7445304211239708207}
@@ -264,6 +266,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5218496247446521316}
     m_Modifications:
+    - target: {fileID: 5174061468273819288, guid: 795885e109a8f9b4b92e8d248f6edf9e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8185430866401052757, guid: 795885e109a8f9b4b92e8d248f6edf9e,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 8185430866401052757, guid: 795885e109a8f9b4b92e8d248f6edf9e,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8126619979034722941, guid: 795885e109a8f9b4b92e8d248f6edf9e,
         type: 3}
       propertyPath: m_Name
@@ -374,21 +391,6 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 8185430866401052757, guid: 795885e109a8f9b4b92e8d248f6edf9e,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 8185430866401052757, guid: 795885e109a8f9b4b92e8d248f6edf9e,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5174061468273819288, guid: 795885e109a8f9b4b92e8d248f6edf9e,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 795885e109a8f9b4b92e8d248f6edf9e, type: 3}
 --- !u!4 &5838498858367689308 stripped
@@ -418,6 +420,18 @@ MonoBehaviour:
 --- !u!114 &3956026226273777549 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1619146469014543748, guid: 795885e109a8f9b4b92e8d248f6edf9e,
+    type: 3}
+  m_PrefabInstance: {fileID: 2350595082913966601}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8437585628889902876 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6162805188562355477, guid: 795885e109a8f9b4b92e8d248f6edf9e,
     type: 3}
   m_PrefabInstance: {fileID: 2350595082913966601}
   m_PrefabAsset: {fileID: 0}

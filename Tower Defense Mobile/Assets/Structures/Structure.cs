@@ -5,44 +5,47 @@ using UnityEngine.UI;
 
 public abstract class Structure : MonoBehaviour, IDamageable<float> {
 
-    [Header("Inherited Parameters")]
-    protected string structureName;  
+    [Header("Inherited Parameters")]    
+    [SerializeField] protected string structureName;
+
+    protected int structureLevel = 1;
+
     [SerializeField] protected float buildingCost;
-    protected int structureLevel = 0;
     [SerializeField] protected float upgradeCost;
+
+    [SerializeField] Text levelIndicator;
+
     [SerializeField] protected float maxHealth;
     protected float health;
+
     [SerializeField] protected GameObject healthBar;
     [SerializeField] protected Image healthBarFilling;
     [SerializeField] protected Text healthValue;
 
-    public void initializeValues(float _health, int _level) {
-        maxHealth = _health;
-        health = maxHealth;
-        structureLevel = _level;
-        structureName = "";
-    }
-
-    public void replenishHealth(){
+    public void ReplenishHealth() {
         health = maxHealth;
     }
 
     public float GetBuildingCost() {
         return buildingCost;
     }
+
     public float GetUpgradeCost() {
         return upgradeCost;
     }
 
-    public float GetHealth(){
+    public float GetHealth() {
         return health;
     }
-    public string getStructureName(){
+
+    public string GetStructureName() {
         return structureName;
     }
-    public int getStructureLevel(){
+
+    public int GetStructureLevel() {
         return structureLevel;
     }
+
     public void TakeDamage(float dmg) {
         health -= dmg;
         StartCoroutine(UpdateHealthbar());
@@ -50,6 +53,7 @@ public abstract class Structure : MonoBehaviour, IDamageable<float> {
             Die();
         }
     }
+
     public IEnumerator UpdateHealthbar() {
 
         if (!healthBar.activeInHierarchy) {
@@ -74,7 +78,13 @@ public abstract class Structure : MonoBehaviour, IDamageable<float> {
 
     }
 
-    public abstract void Upgrade(int levels=1);
+    public abstract void Upgrade(int levels = 1);
+
+    public void UpdateLevelIndicator() {
+
+        levelIndicator.text = "lvl." + structureLevel;
+
+    }
 
     public void Sell() {
         TowerDefense.GameManager.instance.EarnMoney(buildingCost * 0.8f);
@@ -83,8 +93,7 @@ public abstract class Structure : MonoBehaviour, IDamageable<float> {
 
     public virtual void Die() {
         //W przyszłości kwestie graficzne umierania (animacje/eksplozje/particle etc.)
-        gameObject.SetActive(false);
-        healthBar.SetActive(false);
+        Destroy(gameObject);
     }
 
 }

@@ -17,7 +17,7 @@ public class MapManager : MonoBehaviour, IInteractable {
     [SerializeField] private Transform structureContextMenu;
 
     [Header("Save essentials")]
-    [SerializeField] private SaveManager saveManager;
+    private SaveManager saveManager;
     [SerializeField] private Structure[] structures;
 
     [Header("Pathfinding")]
@@ -44,6 +44,7 @@ public class MapManager : MonoBehaviour, IInteractable {
 
         mapGrid = GetComponent<Grid>();
         gameManager = TowerDefense.GameManager.instance;
+        saveManager = SaveManager.Instance;
 
         InitialiseGridInfo();
 
@@ -81,6 +82,7 @@ public class MapManager : MonoBehaviour, IInteractable {
                             OnMapChange.Invoke();
                             mapTiles[cellPosition.x, cellPosition.y].builtStructure = Instantiate(currentlySelectedStructure, cellCenterPosition + new Vector3(0,0,1), transform.rotation);
 
+                            saveManager.state.SetMapTiles(mapTiles);
                         }
                         else {
                             UIManager.instance.PrintToGameLog("Not enough funds!");
@@ -116,7 +118,7 @@ public class MapManager : MonoBehaviour, IInteractable {
 
         highlightedTile = tile;
 
-        Vector3 offset = new Vector3(0, -1.1f, 0);
+        Vector3 offset = new Vector3(0, -1.0f, -2.0f);
         structureContextMenu.position = tile.builtStructure.transform.position + offset;
 
         structureContextMenu.gameObject.SetActive(true);
@@ -185,6 +187,7 @@ public class MapManager : MonoBehaviour, IInteractable {
 
                     string structureName = saveManager.state.tiles[i + j * 18].name;
                     Structure loadedStructure;
+
                     Debug.Log(structureName + " on " + i + ", " + j);
 
                     switch (structureName) {
@@ -202,7 +205,7 @@ public class MapManager : MonoBehaviour, IInteractable {
                     }
 
                     mapTiles[i, j].builtStructure = Instantiate(loadedStructure, mapGrid.GetCellCenterWorld(new Vector3Int(i, j, 0)) + new Vector3(0,0,1), transform.rotation);
-                    mapTiles[i, j].builtStructure.Upgrade(saveManager.state.tiles[i + j * 18].level);
+                    mapTiles[i, j].builtStructure.Upgrade(saveManager.state.tiles[i + j * 18].level - 1);
                     mapTiles[i, j].tileType = MapTile.TileType.NonWalkable;
 
                 }
@@ -353,7 +356,7 @@ public class MapManager : MonoBehaviour, IInteractable {
     /// Callback sent to all game objects before the application is quit.
     /// </summary>
     void OnApplicationQuit() {
-        saveManager.state.setMapTiles(mapTiles);
+        saveManager.state.SetMapTiles(mapTiles);
         saveManager.Save();
     }
 }

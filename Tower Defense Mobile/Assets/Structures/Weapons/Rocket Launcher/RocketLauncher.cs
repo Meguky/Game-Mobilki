@@ -53,12 +53,18 @@ public class RocketLauncher : Weapon {
 
     //trzeba to zrobić inaczej, ulepszenie jednej wyrzutni zwieksza damage rakiet z kazdej wyrzutni
     public override void Upgrade(int levels) {
-        for(int i = 0; i < levels; i++){
+
+        for (int i = 0; i < levels; i++){
+
             buildingCost += upgradeCost;
             upgradeCost *= 2f;
             rocketDamage *= 2f;
             structureLevel++;
+
         }
+
+        UpdateLevelIndicator();
+
     }
 
     new void Update() {

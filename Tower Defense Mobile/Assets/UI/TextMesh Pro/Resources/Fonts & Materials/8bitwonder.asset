@@ -53,9 +53,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
   m_Name: 8bitwonder
   m_EditorClassIdentifier: 
-  hashCode: 0
+  hashCode: 833582690
   material: {fileID: -3669990323448972065}
-  materialHashCode: 0
+  materialHashCode: -256954711
   m_Version: 1.1.0
   m_SourceFontFileGUID: a86b6dfc5fb028c4988eee34059eb9fc
   m_SourceFontFile_EditorRef: {fileID: 0}
