@@ -37,7 +37,13 @@ public abstract class Enemy : MonoBehaviour, IDamageable<float> {
             healthBar.SetActive(true);
         }
 
-        healthValue.text = Mathf.Round(health).ToString();
+        if (health < 0) {
+            healthBar.SetActive(false);
+            yield break;
+        }
+        else {
+            healthValue.text = Mathf.Round(health).ToString();
+        }
 
         float elapsedTime = 0;
         float healthbarScalingTime = 0.1f;
@@ -89,11 +95,35 @@ public abstract class Enemy : MonoBehaviour, IDamageable<float> {
         MapManager.instance.OnMapChange.AddListener(GetNewPath);
     }
 
-    public virtual void Die() {
-        //W przyszłości kwestie graficzne umierania (animacje/eksplozje/particle etc.)
-        OnDeath.Invoke(this);
-        TowerDefense.GameManager.instance.EarnMoney(killingReward);
+    IEnumerator DeathFadeout() {
+
+        SpriteRenderer renderer = GetComponent<SpriteRenderer>();
+
+        float elapsedTime = 0f;
+        float deathFadeoutTime = 0.5f;
+
+        while (renderer.color.a > 0) {
+
+            float newAlpha = Mathf.Clamp(Mathf.Lerp(1, 0, elapsedTime / deathFadeoutTime), 0, 1);
+            renderer.color = new Color(renderer.color.r, renderer.color.g, renderer.color.b, newAlpha);
+
+            elapsedTime += Time.deltaTime;
+
+            yield return new WaitForEndOfFrame();
+        }
+
         Destroy(gameObject);
+    }
+
+    public virtual void Die() {
+
+        OnDeath.Invoke(this);
+        EndlessBitDefense.GameManager.instance.EarnMoney(killingReward);
+
+
+
+        StartCoroutine(DeathFadeout());
+
     }
 
     protected virtual void GetNextTarget() {
@@ -111,20 +141,21 @@ public abstract class Enemy : MonoBehaviour, IDamageable<float> {
     }
 
     protected virtual void Move() {
+        if (health>0) {
+            Vector3 expectedMovement = movementDirection * Time.deltaTime;
+            distanceFromNextWaypoint = Vector3.Distance(transform.position, currentDestination);
 
-        Vector3 expectedMovement = movementDirection * Time.deltaTime;
-        distanceFromNextWaypoint = Vector3.Distance(transform.position, currentDestination);
+            //check if we wont overstep
+            if (expectedMovement.magnitude > distanceFromNextWaypoint) {
+                transform.Translate(currentDestination - transform.position, Space.World);
+            }
+            else {
+                transform.Translate(expectedMovement, Space.World);
+            }
 
-        //check if we wont overstep
-        if (expectedMovement.magnitude > distanceFromNextWaypoint) {
-            transform.Translate(currentDestination - transform.position, Space.World);
-        }
-        else {
-            transform.Translate(expectedMovement, Space.World);
-        }
-
-        if (currentDestination == transform.position) {
-            GetNextTarget();
+            if (currentDestination == transform.position) {
+                GetNextTarget();
+            }
         }
     }
 

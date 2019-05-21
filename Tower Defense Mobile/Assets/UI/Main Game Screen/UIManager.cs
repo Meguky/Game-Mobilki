@@ -13,7 +13,7 @@ public class UIManager : MonoBehaviour {
     [SerializeField] private RectTransform bottomLeftPanel;
     [SerializeField] private RectTransform hidePanelButton;
 
-    private TowerDefense.GameManager gameManager;
+    private EndlessBitDefense.GameManager gameManager;
 
     private bool bottomPanelShown = true;
 
@@ -27,7 +27,7 @@ public class UIManager : MonoBehaviour {
             Destroy(gameObject);
         }
 
-        gameManager = TowerDefense.GameManager.instance;
+        gameManager = EndlessBitDefense.GameManager.instance;
 
         UpdateMoney();
     }

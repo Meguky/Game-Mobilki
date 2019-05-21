@@ -46,6 +46,7 @@ public class GatlingGun : Weapon {
         if (currCooldown >= attackingFrequency) {
 
             gunfireEffect.Play();
+            gunfireEffect.GetComponent<AudioSource>().Play();
             Instantiate(gunshotEffect, trackedEnemy.transform.position, trackedEnemy.transform.rotation);
             trackedEnemy.TakeDamage(attackDamage);
             currCooldown = 0;

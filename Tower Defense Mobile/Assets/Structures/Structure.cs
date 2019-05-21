@@ -87,7 +87,7 @@ public abstract class Structure : MonoBehaviour, IDamageable<float> {
     }
 
     public void Sell() {
-        TowerDefense.GameManager.instance.EarnMoney(buildingCost * 0.8f);
+        EndlessBitDefense.GameManager.instance.EarnMoney(buildingCost * 0.8f);
         Die();
     }
 

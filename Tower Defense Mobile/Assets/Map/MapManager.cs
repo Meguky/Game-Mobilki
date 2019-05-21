@@ -8,7 +8,7 @@ public class MapManager : MonoBehaviour, IInteractable {
 
     public static MapManager instance;
 
-    private TowerDefense.GameManager gameManager;
+    private EndlessBitDefense.GameManager gameManager;
 
     private Grid mapGrid;
     private MapTile[,] mapTiles = new MapTile[18, 28];
@@ -43,7 +43,7 @@ public class MapManager : MonoBehaviour, IInteractable {
         }
 
         mapGrid = GetComponent<Grid>();
-        gameManager = TowerDefense.GameManager.instance;
+        gameManager = EndlessBitDefense.GameManager.instance;
         saveManager = SaveManager.Instance;
 
         InitialiseGridInfo();
@@ -83,6 +83,7 @@ public class MapManager : MonoBehaviour, IInteractable {
                             mapTiles[cellPosition.x, cellPosition.y].builtStructure = Instantiate(currentlySelectedStructure, cellCenterPosition + new Vector3(0,0,1), transform.rotation);
 
                             saveManager.state.SetMapTiles(mapTiles);
+
                         }
                         else {
                             UIManager.instance.PrintToGameLog("Not enough funds!");
@@ -127,7 +128,6 @@ public class MapManager : MonoBehaviour, IInteractable {
     public void UnhighlightTile() {
 
         highlightedTile = null;
-
         structureContextMenu.gameObject.SetActive(false);
 
     }
@@ -146,13 +146,18 @@ public class MapManager : MonoBehaviour, IInteractable {
     public void SellHighlightedStructure() {
 
         highlightedTile.builtStructure.Sell();
+
         highlightedTile.builtStructure = null;
+        highlightedTile.tileType = MapTile.TileType.Walkable;
+
+        saveManager.state.SetMapTiles(mapTiles);
+
         UnhighlightTile();
 
     }
 
     private void InitialiseGridInfo() {
-        Debug.Log("Initializing map");
+
         for (int j = 0; j < 28; ++j) {
             for (int i = 0; i < 18; ++i) {
 
@@ -187,8 +192,6 @@ public class MapManager : MonoBehaviour, IInteractable {
 
                     string structureName = saveManager.state.tiles[i + j * 18].name;
                     Structure loadedStructure;
-
-                    Debug.Log(structureName + " on " + i + ", " + j);
 
                     switch (structureName) {
                         case "Wall":

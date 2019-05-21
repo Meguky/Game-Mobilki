@@ -453,71 +453,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Gunfire Effect
       objectReference: {fileID: 0}
-    - target: {fileID: 982197962374490700, guid: ea9602bc37bd80a489c52e784c6363ab,
-        type: 3}
-      propertyPath: InitialModule.startSpeed.scalar
-      value: 0.71034366
-      objectReference: {fileID: 0}
-    - target: {fileID: 982197962374490700, guid: ea9602bc37bd80a489c52e784c6363ab,
-        type: 3}
-      propertyPath: InitialModule.startSize.scalar
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 982197962374490700, guid: ea9602bc37bd80a489c52e784c6363ab,
-        type: 3}
-      propertyPath: ShapeModule.angle
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 982197962374490700, guid: ea9602bc37bd80a489c52e784c6363ab,
-        type: 3}
-      propertyPath: ShapeModule.radius.value
-      value: 0.05
-      objectReference: {fileID: 0}
-    - target: {fileID: 982197962374490700, guid: ea9602bc37bd80a489c52e784c6363ab,
-        type: 3}
-      propertyPath: ColorModule.gradient.maxGradient.key3.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 982197962374490700, guid: ea9602bc37bd80a489c52e784c6363ab,
-        type: 3}
-      propertyPath: ColorModule.gradient.maxGradient.ctime1
-      value: 31804
-      objectReference: {fileID: 0}
-    - target: {fileID: 982197962374490700, guid: ea9602bc37bd80a489c52e784c6363ab,
-        type: 3}
-      propertyPath: ColorModule.gradient.maxGradient.ctime3
-      value: 45875
-      objectReference: {fileID: 0}
-    - target: {fileID: 982197962374490700, guid: ea9602bc37bd80a489c52e784c6363ab,
-        type: 3}
-      propertyPath: ColorModule.gradient.maxGradient.atime1
-      value: 58596
-      objectReference: {fileID: 0}
-    - target: {fileID: 982197962374490700, guid: ea9602bc37bd80a489c52e784c6363ab,
-        type: 3}
-      propertyPath: VelocityModule.z.maxCurve.m_Curve.Array.data[2].value
-      value: -0.54053897
-      objectReference: {fileID: 0}
-    - target: {fileID: 982197962374490700, guid: ea9602bc37bd80a489c52e784c6363ab,
-        type: 3}
-      propertyPath: VelocityModule.speedModifier.minMaxState
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 982197962374490700, guid: ea9602bc37bd80a489c52e784c6363ab,
-        type: 3}
-      propertyPath: VelocityModule.speedModifier.scalar
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 982197962374490700, guid: ea9602bc37bd80a489c52e784c6363ab,
-        type: 3}
-      propertyPath: VelocityModule.speedModifier.minScalar
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 982197962374490700, guid: ea9602bc37bd80a489c52e784c6363ab,
-        type: 3}
-      propertyPath: NoiseModule.strength.scalar
-      value: 0.05
-      objectReference: {fileID: 0}
     - target: {fileID: 3187408413508310879, guid: ea9602bc37bd80a489c52e784c6363ab,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -572,11 +507,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2285819856836179493, guid: ea9602bc37bd80a489c52e784c6363ab,
-        type: 3}
-      propertyPath: m_VelocityScale
-      value: -0.1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea9602bc37bd80a489c52e784c6363ab, type: 3}

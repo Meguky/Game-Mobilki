@@ -13,6 +13,6 @@ public class Base : Structure {
     }
 
     public override void Die() {
-        TowerDefense.GameManager.instance.OnBaseDestroyed();
+        EndlessBitDefense.GameManager.instance.OnBaseDestroyed();
     }
 }

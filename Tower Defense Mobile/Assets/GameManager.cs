@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace TowerDefense {
+namespace EndlessBitDefense {
     public class GameManager : MonoBehaviour {
 
         public static GameManager instance;
@@ -58,7 +58,7 @@ namespace TowerDefense {
         void Start() {
 
             if (instance == null) {
-                DontDestroyOnLoad(gameObject);
+                //DontDestroyOnLoad(gameObject);
                 instance = this;
             }
             else {
@@ -200,8 +200,9 @@ namespace TowerDefense {
             remainingEnemiesGameObjects = GameObject.FindGameObjectsWithTag("Enemy");
 
             for (int i = 0; i < remainingEnemiesGameObjects.Length; i++) {
-                Destroy(remainingEnemiesGameObjects[i]);
+                remainingEnemiesGameObjects[i].GetComponent<Enemy>().Die();
             }
+
             enemiesCount = 0;
 
             playerBase.ReplenishHealth();
