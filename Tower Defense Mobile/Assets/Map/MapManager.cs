@@ -358,7 +358,7 @@ public class MapManager : MonoBehaviour, IInteractable {
     /// <summary>
     /// Callback sent to all game objects before the application is quit.
     /// </summary>
-    void OnApplicationQuit() {
+    void OnApplicationPause() {
         saveManager.state.SetMapTiles(mapTiles);
         saveManager.Save();
     }
