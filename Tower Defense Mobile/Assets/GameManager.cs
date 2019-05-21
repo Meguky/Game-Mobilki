@@ -332,7 +332,7 @@ namespace TowerDefense {
             }
         }
 
-        void OnApplicationQuit() {
+        void OnApplicationPause() {
             saveManager.state.money = money;
             saveManager.state.waveNumber = waveNumber;
             saveManager.Save();
