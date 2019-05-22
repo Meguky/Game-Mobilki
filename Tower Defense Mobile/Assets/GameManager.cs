@@ -10,10 +10,6 @@ namespace EndlessBitDefense {
         public static GameManager instance;
 
         private CameraManager cameraManager;
-        
-        [Header("Save essentials")]
-        private SaveManager saveManager;
-        [HideInInspector] public bool saveLoaded = false;
 
         [Header("Required References")]
         [SerializeField] private Base playerBase;
@@ -21,7 +17,7 @@ namespace EndlessBitDefense {
         [SerializeField] private UIManager uiManager;
 
         [Header("Player parameters")]
-        [SerializeField] private float money;
+        [SerializeField] public float money;
 
         [Header("Wave parameters")]
         [SerializeField] private int startWave = 1;
@@ -55,7 +51,7 @@ namespace EndlessBitDefense {
             return money;
         }
 
-        void Start() {
+        void Awake() {
 
             if (instance == null) {
                 //DontDestroyOnLoad(gameObject);
@@ -66,27 +62,15 @@ namespace EndlessBitDefense {
             }
 
             cameraManager = Camera.main.GetComponent<CameraManager>();
-            saveManager = SaveManager.Instance;
 
             endWaveTime = new WaitForSeconds(endDelay);
-
-            //Symulacja waveów
-            if (saveManager.Load()) {
-
-                saveLoaded = true;
-                money = saveManager.state.money;
-                startWave = saveManager.state.waveNumber;
-
-                if (startWave > 1) {
-                    for (int i = 0; i < startWave; i++) {
-                        NextWave();
-                    }
-                }
-
-            }
-
         }
 
+        public void simulateWaves(int wavesNumber){
+            for (int i = 0; i < wavesNumber-1; i++) {
+                NextWave();
+            }
+        }
         public void Setup() {
             StartCoroutine(GameLoop());
         }
@@ -332,18 +316,5 @@ namespace EndlessBitDefense {
                 }
             }
         }
-
-        void OnApplicationPause() {
-            saveManager.state.money = money;
-            saveManager.state.waveNumber = waveNumber;
-            saveManager.Save();
-        }
-
-        void OnApplicationQuit() {
-            saveManager.state.money = money;
-            saveManager.state.waveNumber = waveNumber;
-            saveManager.Save();
-        }
-
     }
 }

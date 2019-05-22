@@ -17,7 +17,6 @@ public class MapManager : MonoBehaviour, IInteractable {
     [SerializeField] private Transform structureContextMenu;
 
     [Header("Save essentials")]
-    private SaveManager saveManager;
     [SerializeField] private Structure[] structures;
 
     [Header("Pathfinding")]
@@ -30,9 +29,11 @@ public class MapManager : MonoBehaviour, IInteractable {
 
     public LinkedList<Vector3> defaultPath = new LinkedList<Vector3>();
 
-
+    public MapTile[,] getMap(){
+        return mapTiles;
+    }
     // Start is called before the first frame update
-    void Start() {
+    void Awake() {
 
         //singleton
         if (instance == null) {
@@ -44,13 +45,8 @@ public class MapManager : MonoBehaviour, IInteractable {
 
         mapGrid = GetComponent<Grid>();
         gameManager = EndlessBitDefense.GameManager.instance;
-        saveManager = SaveManager.Instance;
 
         InitialiseGridInfo();
-
-        if (gameManager.saveLoaded) {
-            ReconstructMap();
-        }
 
         defaultPath = FindGroundPathToBaseFrom(spawnerLocation.position);
 
@@ -81,8 +77,6 @@ public class MapManager : MonoBehaviour, IInteractable {
                             defaultPath = testPath;
                             OnMapChange.Invoke();
                             mapTiles[cellPosition.x, cellPosition.y].builtStructure = Instantiate(currentlySelectedStructure, cellCenterPosition + new Vector3(0,0,1), transform.rotation);
-
-                            saveManager.state.SetMapTiles(mapTiles);
 
                         }
                         else {
@@ -186,14 +180,13 @@ public class MapManager : MonoBehaviour, IInteractable {
         }
     }
 
-    public void ReconstructMap() {
-
+    public void ReconstructMap(SaveState state){
         for (int j = 0; j < 28; ++j) {
             for (int i = 0; i < 18; ++i) {
 
-                if (saveManager.state.tiles[i + j * 18].name != "") {
+                if (state.tiles[i + j * 18].name != "") {
 
-                    string structureName = saveManager.state.tiles[i + j * 18].name;
+                    string structureName = state.tiles[i + j * 18].name;
                     Structure loadedStructure;
 
                     switch (structureName) {
@@ -211,7 +204,7 @@ public class MapManager : MonoBehaviour, IInteractable {
                     }
 
                     mapTiles[i, j].builtStructure = Instantiate(loadedStructure, mapGrid.GetCellCenterWorld(new Vector3Int(i, j, 0)) + new Vector3(0,0,1), transform.rotation);
-                    mapTiles[i, j].builtStructure.Upgrade(saveManager.state.tiles[i + j * 18].level - 1);
+                    mapTiles[i, j].builtStructure.Upgrade(state.tiles[i + j * 18].level - 1);
                     mapTiles[i, j].tileType = MapTile.TileType.NonWalkable;
 
                 }
@@ -357,15 +350,5 @@ public class MapManager : MonoBehaviour, IInteractable {
 
         return localPath;
 
-    }
-
-    void OnApplicationPause() {
-        saveManager.state.SetMapTiles(mapTiles);
-        saveManager.Save();
-    }
-
-    void OnApplicationQuit() {
-        saveManager.state.SetMapTiles(mapTiles);
-        saveManager.Save();
     }
 }
