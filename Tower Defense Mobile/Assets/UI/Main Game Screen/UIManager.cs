@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class UIManager : MonoBehaviour {
 
@@ -12,6 +13,9 @@ public class UIManager : MonoBehaviour {
     [SerializeField] private Text moneyTextbox;
     [SerializeField] private RectTransform bottomLeftPanel;
     [SerializeField] private RectTransform hidePanelButton;
+
+    [SerializeField] private List<Transform> structureBuildingButtons;
+
 
     private EndlessBitDefense.GameManager gameManager;
 
@@ -30,6 +34,30 @@ public class UIManager : MonoBehaviour {
         gameManager = EndlessBitDefense.GameManager.instance;
 
         UpdateMoney();
+    }
+
+    public void SetButtonNames() {
+        foreach (Transform button in structureBuildingButtons) {
+
+            TextMeshProUGUI structureName = button.Find("Structure Name").GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI structurePrice = button.Find("Structure Price").GetComponent<TextMeshProUGUI>();
+
+            structureName.text = button.name;
+
+            switch (button.name) {
+                case "Wall":
+                    structurePrice.text = MapManager.instance.referenceStructures[0].GetBuildingCost() + "$";
+                    break;
+                case "Gatling Gun":
+                    structurePrice.text = MapManager.instance.referenceStructures[1].GetBuildingCost() + "$";
+                    break;
+                case "Rocket Launcher":
+                    structurePrice.text = MapManager.instance.referenceStructures[2].GetBuildingCost() + "$";
+                    break;
+                default:
+                    continue;
+            }
+        }
     }
 
     [Header("Game Log Parameters")]

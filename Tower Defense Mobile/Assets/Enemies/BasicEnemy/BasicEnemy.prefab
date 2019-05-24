@@ -103,6 +103,7 @@ MonoBehaviour:
   maxHealth: 100
   defaultDamage: 10
   killingReward: 25
+  movementSpeed: 2
   healthBar: {fileID: 2811512987703477185}
   healthBarFilling: {fileID: 2811512988677042559}
   healthValue: {fileID: 8552661654288539869}
@@ -150,16 +151,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4873005590695736496}
     m_Modifications:
-    - target: {fileID: 5174061468273819288, guid: 795885e109a8f9b4b92e8d248f6edf9e,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3226616504976366196, guid: 795885e109a8f9b4b92e8d248f6edf9e,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8185430866401052757, guid: 795885e109a8f9b4b92e8d248f6edf9e,
         type: 3}
       propertyPath: m_LocalRotation.x
@@ -190,6 +181,16 @@ PrefabInstance:
       propertyPath: m_LocalScale.x
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 5174061468273819288, guid: 795885e109a8f9b4b92e8d248f6edf9e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3226616504976366196, guid: 795885e109a8f9b4b92e8d248f6edf9e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5088691319617353889, guid: 795885e109a8f9b4b92e8d248f6edf9e,
         type: 3}
       propertyPath: m_Enabled
@@ -199,11 +200,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Status Bar
-      objectReference: {fileID: 0}
-    - target: {fileID: 4682369202033285997, guid: 795885e109a8f9b4b92e8d248f6edf9e,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 924134290794340446, guid: 795885e109a8f9b4b92e8d248f6edf9e,
         type: 3}
@@ -319,6 +315,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.y
       value: 0.002
+      objectReference: {fileID: 0}
+    - target: {fileID: 4682369202033285997, guid: 795885e109a8f9b4b92e8d248f6edf9e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 795885e109a8f9b4b92e8d248f6edf9e, type: 3}
