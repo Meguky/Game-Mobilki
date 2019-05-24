@@ -33,8 +33,8 @@ namespace EndlessBitDefense {
 
         [SerializeField] private float monsterHealthMultiplier = 3f;
         [SerializeField] private float monsterDamageMultiplier = 5f;
-        [SerializeField] private float monsterDensityMultiplier = 1f;
         [SerializeField] private float monsterRewardMultiplier = 1f;
+        [SerializeField] private float monsterDensityMultiplier = 1f;
 
         private bool breakWave = false;
         private bool goBackInWaves = false;
@@ -44,9 +44,6 @@ namespace EndlessBitDefense {
 
         [Header("Enemy parameters")]
         [SerializeField] private int enemiesInWave = 5;
-        [SerializeField] private float enemyDamage = 10;
-        [SerializeField] private float enemyHealth = 100;
-        [SerializeField] private float enemyReward = 25;
         [SerializeField] private float spawnIntervals = 0.5f;
         [SerializeField] private Enemy[] enemyTypes;
         [SerializeField] private Transform spawnPoint;
@@ -78,7 +75,7 @@ namespace EndlessBitDefense {
                 startWave = saveManager.state.waveNumber;
 
                 if (startWave > 1) {
-                    for (int i = 0; i < startWave; i++) {
+                    for (int i = 0; i < startWave-1; i++) {
                         NextWave();
                     }
                 }
@@ -145,7 +142,7 @@ namespace EndlessBitDefense {
 
                 enemyInstance = Instantiate(enemyTypes[0], spawnPoint.position, spawnPoint.rotation);
                 enemyInstance.OnDeath.AddListener(OnEnemyDeath);
-                enemyInstance.InitialiseWithParameters(enemyHealth, enemyDamage, enemyReward);
+                enemyInstance.ScaleParameters(monsterHealthMultiplier * waveNumber/10, monsterDamageMultiplier * waveNumber/10, monsterRewardMultiplier * waveNumber/10);
 
                 yield return new WaitForSeconds(spawnIntervals);
 
@@ -200,7 +197,7 @@ namespace EndlessBitDefense {
             remainingEnemiesGameObjects = GameObject.FindGameObjectsWithTag("Enemy");
 
             for (int i = 0; i < remainingEnemiesGameObjects.Length; i++) {
-                remainingEnemiesGameObjects[i].GetComponent<Enemy>().Die();
+                remainingEnemiesGameObjects[i].GetComponent<Enemy>().Die(false);
             }
 
             enemiesCount = 0;
@@ -224,21 +221,13 @@ namespace EndlessBitDefense {
         private void NextWave() {
 
             waveNumber++;
-
             enemiesInWave += Mathf.RoundToInt(monsterDensityMultiplier * waveNumber / 5.0f);
-            enemyHealth += waveNumber * monsterHealthMultiplier;
-            enemyDamage += waveNumber * monsterDamageMultiplier;
-            enemyReward += waveNumber * monsterRewardMultiplier;
 
         }
 
         private void PreviousWave() {
 
             enemiesInWave -= Mathf.RoundToInt(monsterDensityMultiplier * waveNumber / 5.0f);
-            enemyHealth -= waveNumber * monsterHealthMultiplier;
-            enemyDamage -= waveNumber * monsterDamageMultiplier;
-            enemyReward -= waveNumber * monsterRewardMultiplier;
-
             waveNumber--;
 
         }
@@ -334,15 +323,13 @@ namespace EndlessBitDefense {
         }
 
         void OnApplicationPause() {
-            saveManager.state.money = money;
-            saveManager.state.waveNumber = waveNumber;
-            saveManager.Save();
+            if (saveManager!=null) {
+                saveManager.Save(this, MapManager.instance);
+            }
         }
 
         void OnApplicationQuit() {
-            saveManager.state.money = money;
-            saveManager.state.waveNumber = waveNumber;
-            saveManager.Save();
+            saveManager.Save(this, MapManager.instance);
         }
 
     }

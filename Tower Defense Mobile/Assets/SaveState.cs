@@ -30,6 +30,9 @@ public class SaveState {
                     tiles[i + j * 18].level = _mapTiles[i, j].builtStructure.GetStructureLevel();
 
                 }
+                else {
+                    tiles[i + j * 18] = new SaveTileContent();
+                }
             }
         }
     }

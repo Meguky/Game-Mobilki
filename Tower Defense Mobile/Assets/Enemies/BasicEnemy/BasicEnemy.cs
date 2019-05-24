@@ -23,8 +23,7 @@ public class BasicEnemy : Enemy {
     void OnTriggerEnter2D(Collider2D other) {
         if (other.tag.Equals("Structure")) {
             other.GetComponent<Structure>().TakeDamage(damage);
-            killingReward = 0;
-            Die();
+            Die(false);
         }
     }
 

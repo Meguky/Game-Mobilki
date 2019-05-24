@@ -23,7 +23,7 @@ public class GatlingGun : Weapon {
         attackingFrequency = 1.0f / attacksPerSecond;
         availableEnemies = new List<Enemy>();
         weaponRange = GetComponent<CircleCollider2D>();
-        structureName = "GatlingGun";
+
     }
 
     void RotateCannonTowardsEnemy() {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Tilemaps;
+using TMPro;
 
 public class MapManager : MonoBehaviour, IInteractable {
 
@@ -18,7 +19,7 @@ public class MapManager : MonoBehaviour, IInteractable {
 
     [Header("Save essentials")]
     private SaveManager saveManager;
-    [SerializeField] private Structure[] structures;
+    [SerializeField] public Structure[] referenceStructures;
 
     [Header("Pathfinding")]
     [SerializeField] Transform spawnerLocation;
@@ -30,6 +31,9 @@ public class MapManager : MonoBehaviour, IInteractable {
 
     public LinkedList<Vector3> defaultPath = new LinkedList<Vector3>();
 
+    public MapTile[,] GetMapTiles() {
+        return mapTiles;
+    }
 
     // Start is called before the first frame update
     void Start() {
@@ -53,6 +57,8 @@ public class MapManager : MonoBehaviour, IInteractable {
         }
 
         defaultPath = FindGroundPathToBaseFrom(spawnerLocation.position);
+
+        UIManager.instance.SetButtonNames();
 
     }
 
@@ -82,8 +88,6 @@ public class MapManager : MonoBehaviour, IInteractable {
                             OnMapChange.Invoke();
                             mapTiles[cellPosition.x, cellPosition.y].builtStructure = Instantiate(currentlySelectedStructure, cellCenterPosition + new Vector3(0,0,1), transform.rotation);
 
-                            saveManager.state.SetMapTiles(mapTiles);
-
                         }
                         else {
                             UIManager.instance.PrintToGameLog("Not enough funds!");
@@ -110,6 +114,16 @@ public class MapManager : MonoBehaviour, IInteractable {
         UnhighlightTile();
     }
 
+    public void PrintMapTiles() {
+
+        foreach (MapTile mapTile in mapTiles) {
+            if (mapTile.builtStructure!=null) {
+                Debug.Log(mapTile.builtStructure.GetStructureName());
+            }
+        }
+
+    }
+
     public void HighlightTile(MapTile tile) {
 
         if (highlightedTile == tile) {
@@ -120,9 +134,15 @@ public class MapManager : MonoBehaviour, IInteractable {
         highlightedTile = tile;
 
         Vector3 offset = new Vector3(0, -1.0f, -2.0f);
-        structureContextMenu.position = tile.builtStructure.transform.position + offset;
+        structureContextMenu.position = highlightedTile.builtStructure.transform.position + offset;
 
         structureContextMenu.gameObject.SetActive(true);
+        structureContextMenu.Find("Canvas/Button Panel/Upgrade/Upgrade Cost").GetComponent<TextMeshProUGUI>().text = highlightedTile.builtStructure.GetUpgradeCost() + "$";
+
+    }
+
+    public void UpdateHighlight() {
+        structureContextMenu.Find("Canvas/Button Panel/Upgrade/Upgrade Cost").GetComponent<TextMeshProUGUI>().text = highlightedTile.builtStructure.GetUpgradeCost() + "$";
     }
 
     public void UnhighlightTile() {
@@ -146,16 +166,11 @@ public class MapManager : MonoBehaviour, IInteractable {
     public void SellHighlightedStructure() {
 
         highlightedTile.builtStructure.Sell();
-
         highlightedTile.builtStructure = null;
 
-        // thereWasAnAttempt.png
-        //
-        //mapTiles[highlightedTile.gridLocation.x, highlightedTile.gridLocation.y].builtStructure = null;
-        //saveManager.state.SetMapTiles(mapTiles);
-        //saveManager.Save();
-
         UnhighlightTile();
+
+        PrintMapTiles();
 
     }
 
@@ -198,13 +213,13 @@ public class MapManager : MonoBehaviour, IInteractable {
 
                     switch (structureName) {
                         case "Wall":
-                            loadedStructure = structures[0];
+                            loadedStructure = referenceStructures[0];
                             break;
-                        case "RocketLauncher":
-                            loadedStructure = structures[1];
+                        case "Gatling Gun":
+                            loadedStructure = referenceStructures[1];
                             break;
-                        case "GatlingGun":
-                            loadedStructure = structures[2];
+                        case "Rocket Launcher":
+                            loadedStructure = referenceStructures[2];
                             break;
                         default:
                             continue;
@@ -357,15 +372,5 @@ public class MapManager : MonoBehaviour, IInteractable {
 
         return localPath;
 
-    }
-
-    void OnApplicationPause() {
-        saveManager.state.SetMapTiles(mapTiles);
-        saveManager.Save();
-    }
-
-    void OnApplicationQuit() {
-        saveManager.state.SetMapTiles(mapTiles);
-        saveManager.Save();
     }
 }

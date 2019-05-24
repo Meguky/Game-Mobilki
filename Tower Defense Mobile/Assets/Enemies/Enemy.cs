@@ -15,6 +15,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable<float> {
     [SerializeField] protected float defaultDamage;
     protected float damage;
     [SerializeField] protected float killingReward;
+    [SerializeField] protected float movementSpeed;
 
     [SerializeField] protected GameObject healthBar;
     [SerializeField] protected Image healthBarFilling;
@@ -25,10 +26,11 @@ public abstract class Enemy : MonoBehaviour, IDamageable<float> {
         damage = defaultDamage;
     }
 
-    public void InitialiseWithParameters(float _health, float _damage, float _reward){
-        maxHealth = _health;
-        defaultDamage = _damage;
-        killingReward = _reward;
+    public void ScaleParameters(float healthMultiplier, float damageMultiplier, float rewardMultiplier) {
+        Debug.Log(healthMultiplier);
+        maxHealth += maxHealth * healthMultiplier;
+        defaultDamage += defaultDamage * damageMultiplier;
+        killingReward += killingReward * rewardMultiplier;
     }
 
     IEnumerator UpdateHealthbar() {
@@ -69,7 +71,6 @@ public abstract class Enemy : MonoBehaviour, IDamageable<float> {
 
     int currentTargetIndex = 0;
     protected float distanceFromNextWaypoint;
-    protected float movementSpeed = 2;
 
     //zwraca pozycję na ścieżce waypointów i odległość od obecnego celu
     public float[] DistanceToBase() {
@@ -116,11 +117,16 @@ public abstract class Enemy : MonoBehaviour, IDamageable<float> {
     }
 
     public virtual void Die() {
+        Die(true);
+    }
+
+    public virtual void Die(bool earnReward = true) {
 
         OnDeath.Invoke(this);
-        EndlessBitDefense.GameManager.instance.EarnMoney(killingReward);
 
-
+        if (earnReward) {
+            EndlessBitDefense.GameManager.instance.EarnMoney(killingReward);
+        }
 
         StartCoroutine(DeathFadeout());
 
@@ -142,6 +148,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable<float> {
 
     protected virtual void Move() {
         if (health>0) {
+
             Vector3 expectedMovement = movementDirection * Time.deltaTime;
             distanceFromNextWaypoint = Vector3.Distance(transform.position, currentDestination);
 
