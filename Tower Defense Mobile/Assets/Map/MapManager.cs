@@ -114,16 +114,6 @@ public class MapManager : MonoBehaviour, IInteractable {
         UnhighlightTile();
     }
 
-    public void PrintMapTiles() {
-
-        foreach (MapTile mapTile in mapTiles) {
-            if (mapTile.builtStructure!=null) {
-                Debug.Log(mapTile.builtStructure.GetStructureName());
-            }
-        }
-
-    }
-
     public void HighlightTile(MapTile tile) {
 
         if (highlightedTile == tile) {
@@ -169,8 +159,6 @@ public class MapManager : MonoBehaviour, IInteractable {
         highlightedTile.builtStructure = null;
 
         UnhighlightTile();
-
-        PrintMapTiles();
 
     }
 
