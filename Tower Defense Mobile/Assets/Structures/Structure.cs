@@ -47,11 +47,17 @@ public abstract class Structure : MonoBehaviour, IDamageable<float> {
         return structureLevel;
     }
 
-    public virtual void TakeDamage(float dmg) {
-        health -= dmg;
-        StartCoroutine(UpdateHealthbar());
-        if (health <= 0) {
-            Die();
+    public void TakeDamage(float dmg) {
+        if (health>0) {
+            if (health - dmg > 0) {
+                health -= dmg;
+                StartCoroutine(UpdateHealthbar());
+            }
+            else {
+                health = 0;
+                StartCoroutine(UpdateHealthbar());
+                Die();
+            }
         }
     }
 

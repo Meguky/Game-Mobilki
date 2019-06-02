@@ -78,10 +78,16 @@ public abstract class Enemy : MonoBehaviour, IDamageable<float> {
     }
 
     public void TakeDamage(float dmg) {
-        health -= dmg;
-        StartCoroutine(UpdateHealthbar());
-        if (health <= 0) {
-            Die();
+        if (health > 0) {
+            if (health - dmg > 0) {
+                health -= dmg;
+                StartCoroutine(UpdateHealthbar());
+            }
+            else {
+                health = 0;
+                StartCoroutine(UpdateHealthbar());
+                Die();
+            }
         }
     }
 
