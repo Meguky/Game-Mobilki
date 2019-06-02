@@ -135,7 +135,7 @@ namespace EndlessBitDefense {
 
         private IEnumerator GenerateWave() {
 
-            enemiesCount += enemiesInWave;
+            enemiesCount = enemiesInWave;
             waveAnnouncer.text = "Enemies left in wave: " + enemiesCount;
 
             for (int i = 0; i < enemiesInWave; i++) {
@@ -160,6 +160,8 @@ namespace EndlessBitDefense {
         }
 
         private IEnumerator EndWave() {
+
+            breakWave = false;
 
             if (goBackInWaves) {
 
@@ -200,8 +202,10 @@ namespace EndlessBitDefense {
             for (int i = 0; i < remainingEnemiesGameObjects.Length; i++) {
                 remainingEnemiesGameObjects[i].GetComponent<Enemy>().Die(false);
             }
-            playerBase.ReplenishHealth();
+
             breakWave = false;
+            playerBase.ReplenishHealth();
+
 
         }
 
@@ -235,6 +239,8 @@ namespace EndlessBitDefense {
 
             enemiesCount--;
 
+            Debug.Log(enemiesCount);
+
             if (enemiesCount==0) {
                 breakWave = true;
             }
@@ -253,6 +259,7 @@ namespace EndlessBitDefense {
 
         //Zmienne na rzecz obsługi dotyku
         Vector2 touchStartPosition, touchPreviousPosition, touchCurrentPosition;
+        bool touchBeganOnUIObject = false;
 
         private bool IsPointerOverUIObject() {
             PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
@@ -266,9 +273,14 @@ namespace EndlessBitDefense {
 
             //Test platformy też żeby kodu ciągle niezmieniać. Można po developmencie wywalić.
             if (Application.platform == RuntimePlatform.Android) {
-                if (Input.touchCount > 0 && Input.touchCount < 2 && !IsPointerOverUIObject()) {
+
+                if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Began && IsPointerOverUIObject()) {
+                    touchBeganOnUIObject = true;
+                }
+                if (Input.touchCount == 1 && !IsPointerOverUIObject()) {
 
                     if (Input.GetTouch(0).phase == TouchPhase.Began) {
+                        touchBeganOnUIObject = false;
                         touchCurrentPosition = touchPreviousPosition = touchStartPosition = Input.GetTouch(0).position;
                     }
                     if (Input.GetTouch(0).phase == TouchPhase.Moved) {
@@ -276,7 +288,7 @@ namespace EndlessBitDefense {
                         touchCurrentPosition = Input.GetTouch(0).position;
                         cameraManager.MoveCameraBy(touchPreviousPosition - touchCurrentPosition);
                     }
-                    if (Input.GetTouch(0).phase == TouchPhase.Ended && (touchStartPosition - touchCurrentPosition).magnitude < 5.0f) {
+                    if (Input.GetTouch(0).phase == TouchPhase.Ended && !touchBeganOnUIObject && (touchStartPosition - touchCurrentPosition).magnitude < 5.0f) {
 
                         Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
                         Vector2 touchPos = new Vector2(worldPos.x, worldPos.y);
