@@ -24,6 +24,7 @@ public abstract class Structure : MonoBehaviour, IDamageable<float> {
 
     public void ReplenishHealth() {
         health = maxHealth;
+        StartCoroutine(UpdateHealthbar());
     }
 
     public float GetBuildingCost() {
@@ -46,7 +47,7 @@ public abstract class Structure : MonoBehaviour, IDamageable<float> {
         return structureLevel;
     }
 
-    public void TakeDamage(float dmg) {
+    public virtual void TakeDamage(float dmg) {
         health -= dmg;
         StartCoroutine(UpdateHealthbar());
         if (health <= 0) {

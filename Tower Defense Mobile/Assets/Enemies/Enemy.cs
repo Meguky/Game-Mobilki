@@ -27,7 +27,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable<float> {
     }
 
     public void ScaleParameters(float healthMultiplier, float damageMultiplier, float rewardMultiplier) {
-        Debug.Log(healthMultiplier);
+        //Debug.Log(healthMultiplier);
         maxHealth += maxHealth * healthMultiplier;
         defaultDamage += defaultDamage * damageMultiplier;
         killingReward += killingReward * rewardMultiplier;

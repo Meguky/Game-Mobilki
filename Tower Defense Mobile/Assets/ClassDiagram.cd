@@ -1,0 +1,264 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="CameraManager">
+    <Position X="2" Y="18.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAQCEABAACAAAAAAgAAAAAAAAAAAAAAIAAAAAAEAAAA=</HashCode>
+      <FileName>Assets\CameraManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BasicEnemy">
+    <Position X="11" Y="22.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Enemies\BasicEnemy\BasicEnemy.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Enemy">
+    <Position X="10.5" Y="14.25" Width="3" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="Enemy.EnemyEvent" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Enemies\Enemy.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAQQAQAogIAAkCAgEAAAAIAhIAAAAAAIAIgAgAEQBAg=</HashCode>
+      <FileName>Assets\Enemies\Enemy.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MapManager" BaseTypeListCollapsed="true">
+    <Position X="9.25" Y="3.75" Width="3.5" />
+    <AssociationLine Name="gameManager" Type="EndlessBitDefense.GameManager" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="10.125" Y="9.665" />
+        <Point X="10.125" Y="10.812" />
+        <Point X="8.75" Y="10.812" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="mapTiles" Type="MapTile" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="12.562" Y="3.75" />
+        <Point X="12.562" Y="2.562" />
+        <Point X="13.25" Y="2.562" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="highlightedTile" Type="MapTile" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="10.438" Y="3.75" />
+        <Point X="10.438" Y="1.75" />
+        <Point X="13.25" Y="1.75" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AEQkAARAACAQBAACQEBAECBgAgRDgQQAAEBAACIAAAg=</HashCode>
+      <FileName>Assets\Map\MapManager.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="instance" />
+      <Field Name="gameManager" />
+      <Field Name="currentlySelectedStructure" />
+      <Field Name="highlightedTile" />
+      <Field Name="saveManager" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Field Name="mapTiles" />
+      <Field Name="referenceStructures" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MapTile">
+    <Position X="13.25" Y="0.5" Width="2" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Enum Name="MapTile.TileType" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Map\MapTile.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <AssociationLine Name="builtStructure" Type="Structure" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="13.75" Y="3.998" />
+        <Point X="13.75" Y="6.188" />
+        <Point X="15" Y="6.188" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AgAAAAAEAAAACABAAAAAAAAAAAAAAAAAAIAgAAAAAAE=</HashCode>
+      <FileName>Assets\Map\MapTile.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="builtStructure" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="SaveManager">
+    <Position X="5.75" Y="6.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAgIAAACAABAAAAAAAAAAAAAIAAAAEQAAAAAAAAAA=</HashCode>
+      <FileName>Assets\SaveManager.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="state" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="SaveSerializer">
+    <Position X="4.75" Y="4.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAACBAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\SaveSerializer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SaveTileContent">
+    <Position X="3" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAEEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\SaveState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SaveState">
+    <Position X="2.25" Y="6.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAABAAAAEgA=</HashCode>
+      <FileName>Assets\SaveState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Base">
+    <Position X="9.75" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAgAAAgAAAAAAAAAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>Assets\Structures\Base\Base.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Structure">
+    <Position X="15" Y="5.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>DAAAAAAYgAAAxAAgwBAgAAAAAAAAAAAAQAAggCAYBAg=</HashCode>
+      <FileName>Assets\Structures\Structure.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Wall">
+    <Position X="12" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Structures\Wall\Wall.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GatlingGun">
+    <Position X="17.75" Y="15.25" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>EAQAAAAAADIAAEAAAAAgEAAAAQAAAAAAAABAAACgAgA=</HashCode>
+      <FileName>Assets\Structures\Weapons\Gatling Gun\GatlingGun.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EnemyDetectionHandler">
+    <Position X="17.25" Y="19.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAAAAAAAAAAAAgEAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Structures\Weapons\Rocket Launcher\EnemyDetectionHandler.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HomingMissle">
+    <Position X="14.25" Y="19.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>QAQEIQAAACAgAQBAAAAAAggAAAAAABAIAAhABAAAgAA=</HashCode>
+      <FileName>Assets\Structures\Weapons\Rocket Launcher\HomingMissle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RocketLauncher">
+    <Position X="14.25" Y="15.25" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>EAQAAAAAADIAAEAAAAAgBAAAAAAAAAAAAgBAAACAAAg=</HashCode>
+      <FileName>Assets\Structures\Weapons\Rocket Launcher\RocketLauncher.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="usedProjectile" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Weapon">
+    <Position X="16" Y="11.5" Width="2.75" />
+    <AssociationLine Name="availableEnemies" Type="Enemy" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="16" Y="13.715" />
+        <Point X="12.938" Y="13.715" />
+        <Point X="12.938" Y="14.25" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-2.14" Y="0.274" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAQAAQCAgCAAAABAAAAgAAAAAEAAQAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Structures\Weapons\Weapon.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="availableEnemies" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="UIManager">
+    <Position X="1" Y="13" Width="3" />
+    <TypeIdentifier>
+      <HashCode>BEEAAIAAAKAAARAAAGAgAAQAAABAABBQGgAAAAAAEAA=</HashCode>
+      <FileName>Assets\UI\Main Game Screen\UIManager.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="instance" />
+      <Field Name="gameManager" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="MainMenuManager">
+    <Position X="3" Y="2.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAABAAAAAIAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\UI\Main Menu\MainMenuManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ParticleSelfdestructer">
+    <Position X="5.5" Y="2.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\VFX\ParticleSelfdestructer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EndlessBitDefense.GameManager">
+    <Position X="5.5" Y="10.5" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AIUEgDAICKBAQEABAQAEIoAQBGRAgBgAECNFUBAYEgA=</HashCode>
+      <FileName>Assets\GameManager.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="instance" />
+      <Field Name="cameraManager" />
+      <Field Name="saveManager" />
+      <Field Name="playerBase" />
+      <Field Name="uiManager" />
+      <Field Name="enemyInstance" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Field Name="enemyTypes" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Interface Name="IDamageable&lt;T&gt;">
+    <Position X="4.25" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>Assets\Interfaces\IDamageable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="IInteractable">
+    <Position X="7" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Interfaces\IInteractable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

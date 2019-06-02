@@ -12,6 +12,18 @@ public class Base : Structure {
         return;
     }
 
+    public override void TakeDamage(float dmg) {
+        if (health-dmg>0) {
+            health -= dmg;
+            StartCoroutine(UpdateHealthbar());
+        }
+        else {
+            health = 0;
+            StartCoroutine(UpdateHealthbar());
+            Die();
+        }
+    }
+
     public override void Die() {
         EndlessBitDefense.GameManager.instance.OnBaseDestroyed();
     }

@@ -161,8 +161,6 @@ namespace EndlessBitDefense {
 
         private IEnumerator EndWave() {
 
-            breakWave = false;
-
             if (goBackInWaves) {
 
                 goBackInWaves = false;
@@ -175,9 +173,12 @@ namespace EndlessBitDefense {
             }
             else if (playerBase.GetHealth() <= 0) {
 
+                CleanupStage();
+
                 waveAnnouncer.text = "Wave failed, retring current wave!";
 
-                CleanupStage();
+                Debug.Log("Breakwave:" + breakWave);
+
 
             }
             else {
@@ -199,10 +200,8 @@ namespace EndlessBitDefense {
             for (int i = 0; i < remainingEnemiesGameObjects.Length; i++) {
                 remainingEnemiesGameObjects[i].GetComponent<Enemy>().Die(false);
             }
-
-            enemiesCount = 0;
-
             playerBase.ReplenishHealth();
+            breakWave = false;
 
         }
 
