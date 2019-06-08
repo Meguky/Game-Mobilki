@@ -177,7 +177,7 @@ namespace EndlessBitDefense {
 
                 CleanupStage();
 
-                waveAnnouncer.text = "Wave failed, retring current wave!";
+                waveAnnouncer.text = "Wave failed, retrying current wave!";
 
                 Debug.Log("Breakwave:" + breakWave);
 

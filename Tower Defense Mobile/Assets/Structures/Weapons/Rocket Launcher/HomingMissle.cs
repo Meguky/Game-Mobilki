@@ -129,8 +129,4 @@ public class HomingMissle : MonoBehaviour {
 
     }
 
-    private void OnDrawGizmos() {
-        Gizmos.DrawWireSphere(transform.position, explosionRadius);
-    }
-
 }
